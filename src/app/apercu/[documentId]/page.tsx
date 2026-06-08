@@ -4,8 +4,8 @@ import { eq } from "drizzle-orm";
 import type { Metadata } from "next";
 import { db } from "@/server/db";
 import { documents } from "@/server/db/schema";
-import { Button } from "@/components/ui/button";
 import { DocumentPreview } from "@/components/shared/DocumentPreview";
+import { PayButton } from "./PayButton";
 
 interface Props {
   params: Promise<{ documentId: string }>;
@@ -76,9 +76,7 @@ export default async function ApercuPage({ params }: Props) {
             <div className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/60">
               Aperçu gratuit
             </div>
-            <Button size="sm" disabled className="cursor-not-allowed">
-              Débloquer — {price}
-            </Button>
+            <PayButton documentId={documentId} price={price} size="sm" />
           </div>
         </div>
 
@@ -107,11 +105,8 @@ export default async function ApercuPage({ params }: Props) {
               <li>✓ Accès à vie, re-téléchargeable</li>
             </ul>
           </div>
-          <div className="flex flex-col items-center gap-2 shrink-0">
-            <Button size="lg" disabled className="cursor-not-allowed min-w-44 text-base">
-              Payer {price} →
-            </Button>
-            <p className="text-xs text-muted-foreground">Paiement Stripe — bientôt disponible</p>
+          <div className="shrink-0">
+            <PayButton documentId={documentId} price={price} size="lg" />
           </div>
         </div>
 
