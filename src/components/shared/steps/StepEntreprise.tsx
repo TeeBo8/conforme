@@ -163,7 +163,7 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             <Input
               value={fields.nomEntreprise}
               onChange={(e) => set("nomEntreprise", e.target.value)}
-              placeholder="Ex : Studio Leture"
+              placeholder="Ex : Dupont Design"
             />
           </Field>
 

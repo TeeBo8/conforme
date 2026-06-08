@@ -1,7 +1,8 @@
 import { createTRPCRouter } from "./trpc";
+import { documentRouter } from "./routers/document";
 
 export const appRouter = createTRPCRouter({
-  // Routers ajoutés par phase
+  document: documentRouter,
 });
 
 export type AppRouter = typeof appRouter;
