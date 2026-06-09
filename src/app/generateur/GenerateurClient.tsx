@@ -6,7 +6,11 @@ import { DocumentForm } from "@/components/shared/DocumentForm";
 import { api } from "@/lib/trpc";
 import type { DocumentFormData } from "@/lib/validations/document";
 
-export default function GenerateurClient() {
+interface Props {
+  initialData?: Partial<DocumentFormData>;
+}
+
+export default function GenerateurClient({ initialData }: Props) {
   const router = useRouter();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -32,6 +36,7 @@ export default function GenerateurClient() {
       <DocumentForm
         onGenerate={handleGenerate}
         isGenerating={generateMutation.isPending}
+        initialData={initialData}
       />
     </>
   );

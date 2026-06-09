@@ -1,9 +1,27 @@
-export const metadata = {
+import type { Metadata } from "next";
+import type { DocumentFormData } from "@/lib/validations/document";
+import GenerateurClient from "./GenerateurClient";
+
+export const metadata: Metadata = {
   title: "Générateur de documents légaux — ConformeFR",
-  description: "Créez vos mentions légales et politique de confidentialité en 3 minutes.",
+  description: "Créez vos mentions légales et politique de confidentialité RGPD en 3 minutes. Aperçu gratuit, téléchargement PDF et HTML à partir de 19 €.",
 };
 
-export default function GenerateurPage() {
+interface Props {
+  searchParams: Promise<{ type?: string; siteType?: string }>;
+}
+
+export default async function GenerateurPage({ searchParams }: Props) {
+  const { type, siteType } = await searchParams;
+
+  const initialData: Partial<DocumentFormData> = {};
+  if (type === "mentions_legales" || type === "politique_confidentialite" || type === "pack") {
+    initialData.documentType = type;
+  }
+  if (siteType === "vitrine" || siteType === "ecommerce" || siteType === "blog" || siteType === "saas") {
+    initialData.siteType = siteType as DocumentFormData["siteType"];
+  }
+
   return (
     <main className="min-h-screen py-12 px-4">
       <div className="max-w-2xl mx-auto mb-10 text-center">
@@ -12,10 +30,7 @@ export default function GenerateurPage() {
           Répondez aux questions ci-dessous — l&apos;aperçu est immédiat et gratuit.
         </p>
       </div>
-      <GenerateurClient />
+      <GenerateurClient initialData={Object.keys(initialData).length > 0 ? initialData : undefined} />
     </main>
   );
 }
-
-// Client wrapper — isolated pour garder la page en Server Component
-import GenerateurClient from "./GenerateurClient";

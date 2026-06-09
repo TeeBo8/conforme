@@ -12,6 +12,7 @@ import type { DocumentType, SiteType } from "@/lib/templates/types";
 interface Props {
   onGenerate: (data: DocumentFormData) => void;
   isGenerating?: boolean;
+  initialData?: Partial<DocumentFormData>;
 }
 
 const STEP_LABELS = ["Document", "Site", "Infos", "Données", "Récap"];
@@ -29,9 +30,9 @@ function getStepLabel(step: number, documentType?: string): string {
   return STEP_LABELS[step] ?? "";
 }
 
-export function DocumentForm({ onGenerate, isGenerating }: Props) {
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState<Partial<DocumentFormData>>({});
+export function DocumentForm({ onGenerate, isGenerating, initialData }: Props) {
+  const [step, setStep] = useState(() => (initialData?.documentType ? 1 : 0));
+  const [data, setData] = useState<Partial<DocumentFormData>>(initialData ?? {});
 
   const totalSteps = getTotalSteps(data.documentType);
 
