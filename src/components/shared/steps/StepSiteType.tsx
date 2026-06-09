@@ -74,8 +74,8 @@ export function StepSiteType({ initial, onNext, onBack }: Props) {
             }}
             className={`text-left p-4 rounded-lg border transition-colors ${
               selected === opt.value
-                ? "border-white bg-white/5"
-                : "border-border hover:border-white/40"
+                ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                : "border-border hover:border-primary/50"
             }`}
           >
             <p className="font-medium">{opt.label}</p>

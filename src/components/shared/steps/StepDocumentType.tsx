@@ -70,8 +70,8 @@ export function StepDocumentType({ initial, onNext }: Props) {
             }}
             className={`w-full text-left p-4 rounded-lg border transition-colors ${
               selected === opt.value
-                ? "border-white bg-white/5"
-                : "border-border hover:border-white/40"
+                ? "border-primary bg-primary/10 ring-1 ring-primary/30"
+                : "border-border hover:border-primary/50"
             }`}
           >
             <div className="flex items-start justify-between gap-4">
