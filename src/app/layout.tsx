@@ -45,7 +45,8 @@ export default function RootLayout({
                 <div className="flex items-center gap-4">
                   <a href="/generateur" className="hover:text-foreground transition-colors">Générateur</a>
                   <a href="/blog" className="hover:text-foreground transition-colors">Blog</a>
-                  <a href="/connexion" className="hover:text-foreground transition-colors">Connexion</a>
+                  <a href="/mentions-legales" className="hover:text-foreground transition-colors">Mentions légales</a>
+                  <a href="/politique-confidentialite" className="hover:text-foreground transition-colors">Confidentialité</a>
                 </div>
               </div>
             </footer>
