@@ -47,6 +47,7 @@ export default function RootLayout({
                   <a href="/blog" className="hover:text-foreground transition-colors">Blog</a>
                   <a href="/mentions-legales" className="hover:text-foreground transition-colors">Mentions légales</a>
                   <a href="/politique-confidentialite" className="hover:text-foreground transition-colors">Confidentialité</a>
+                  <a href="mailto:contact@teebostudio.fr" className="hover:text-foreground transition-colors">Contact</a>
                 </div>
               </div>
             </footer>
