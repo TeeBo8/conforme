@@ -12,7 +12,7 @@ interface SendDocumentUnlockedParams {
 
 export async function sendDocumentUnlocked({ to, downloadUrl }: SendDocumentUnlockedParams) {
   await getResend().emails.send({
-    from: "ConformeFR <onboarding@resend.dev>",
+    from: "ConformeFR <noreply@conformefr.com>",
     to,
     subject: "Votre document légal est prêt — ConformeFR",
     html: `
