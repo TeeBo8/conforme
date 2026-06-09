@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
       await sendDocumentUnlocked({
         to: customerEmail,
-        downloadUrl: `${appUrl}/download/${documentId}`,
+        downloadUrl: `${appUrl}/api/download/${documentId}`,
       }).catch((err) => console.error("Failed to send email:", err));
     }
   }
