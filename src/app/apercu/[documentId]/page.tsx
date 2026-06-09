@@ -61,22 +61,24 @@ export default async function ApercuPage({ params }: Props) {
       <div className="max-w-3xl mx-auto space-y-6">
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <Link
-              href="/generateur"
-              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-white transition-colors mb-3"
-            >
-              ← Modifier les informations
-            </Link>
-            <h1 className="text-2xl font-bold tracking-tight">{label}</h1>
-            <p className="text-xs text-muted-foreground mt-1">Généré le {createdAt}</p>
-          </div>
-          <div className="flex items-center gap-2 pt-1">
-            <div className="rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/60">
-              Aperçu gratuit
+        <div className="space-y-3">
+          <Link
+            href="/generateur"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-white transition-colors"
+          >
+            ← Modifier les informations
+          </Link>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight">{label}</h1>
+              <p className="text-xs text-muted-foreground mt-1">Généré le {createdAt}</p>
             </div>
-            <PayButton documentId={documentId} price={price} size="sm" />
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="hidden sm:block rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/60">
+                Aperçu gratuit
+              </div>
+              <PayButton documentId={documentId} price={price} size="sm" />
+            </div>
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 import type { DocumentFormData } from "@/lib/validations/document";
 
 interface Props {
@@ -147,8 +148,9 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
         <Button
           onClick={() => onGenerate(data)}
           disabled={isGenerating}
-          className="min-w-40"
+          className="min-w-40 gap-2"
         >
+          {isGenerating && <Spinner size="sm" />}
           {isGenerating ? "Génération…" : "Générer l'aperçu →"}
         </Button>
       </div>

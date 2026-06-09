@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import { TRPCProvider } from "@/components/providers/TRPCProvider";
 import { ClientNavbar } from "@/components/shared/ClientNavbar";
 import "./globals.css";
@@ -33,7 +34,18 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <TRPCProvider>
           <ClientNavbar />
-          {children}
+          <div className="flex-1">{children}</div>
+          <footer className="border-t border-white/10 mt-auto">
+            <div className="mx-auto max-w-3xl px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
+              <span>© {new Date().getFullYear()} ConformeFR — Documents légaux pour sites web français</span>
+              <div className="flex items-center gap-4">
+                <a href="/generateur" className="hover:text-white transition-colors">Générateur</a>
+                <a href="/blog" className="hover:text-white transition-colors">Blog</a>
+                <a href="/connexion" className="hover:text-white transition-colors">Connexion</a>
+              </div>
+            </div>
+          </footer>
+          <Toaster theme="dark" position="bottom-right" richColors />
         </TRPCProvider>
       </body>
     </html>
