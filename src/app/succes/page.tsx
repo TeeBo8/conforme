@@ -1,5 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { eq } from "drizzle-orm";
+import { getStripe } from "@/lib/stripe";
+import { db } from "@/server/db";
+import { documents, orders } from "@/server/db/schema";
+import { sendDocumentUnlocked } from "@/lib/resend";
 
 export const metadata: Metadata = {
   title: "Paiement confirmé — ConformeFR",
@@ -10,8 +15,53 @@ interface Props {
   searchParams: Promise<{ session_id?: string }>;
 }
 
+async function confirmPayment(sessionId: string) {
+  try {
+    const session = await getStripe().checkout.sessions.retrieve(sessionId);
+    if (session.payment_status !== "paid") return;
+
+    const documentId = session.metadata?.documentId;
+    const userId = session.metadata?.userId;
+    const customerEmail = session.customer_details?.email ?? session.customer_email;
+
+    if (!documentId) return;
+
+    const [existing] = await db
+      .select({ status: documents.status })
+      .from(documents)
+      .where(eq(documents.id, documentId))
+      .limit(1);
+
+    if (existing?.status === "paid") return;
+
+    await db
+      .update(orders)
+      .set({ status: "paid" })
+      .where(eq(orders.stripeSessionId, sessionId));
+
+    await db
+      .update(documents)
+      .set({ status: "paid", userId: userId ?? null, updatedAt: new Date() })
+      .where(eq(documents.id, documentId));
+
+    if (customerEmail) {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+      await sendDocumentUnlocked({
+        to: customerEmail,
+        downloadUrl: `${appUrl}/download/${documentId}`,
+      }).catch((err) => console.error("Failed to send email:", err));
+    }
+  } catch (err) {
+    console.error("[succes] confirmPayment error:", err);
+  }
+}
+
 export default async function SuccesPage({ searchParams }: Props) {
   const { session_id } = await searchParams;
+
+  if (session_id) {
+    await confirmPayment(session_id);
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
@@ -46,14 +96,14 @@ export default async function SuccesPage({ searchParams }: Props) {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium hover:bg-white/10 transition-colors"
+            href="/dashboard"
+            className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition-colors"
           >
-            Retour à l&apos;accueil
+            Voir mes documents →
           </Link>
           <Link
             href="/generateur"
-            className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition-colors"
+            className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium hover:bg-white/10 transition-colors"
           >
             Générer un autre document
           </Link>
