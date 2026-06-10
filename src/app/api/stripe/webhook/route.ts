@@ -37,6 +37,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true });
     }
 
+    // Idempotence : la page /succes a pu confirmer avant le webhook —
+    // on ne renvoie pas un second email
+    const [existing] = await db
+      .select({ status: documents.status })
+      .from(documents)
+      .where(eq(documents.id, documentId))
+      .limit(1);
+
+    if (existing?.status === "paid") {
+      return NextResponse.json({ received: true });
+    }
+
     await db
       .update(orders)
       .set({ status: "paid" })

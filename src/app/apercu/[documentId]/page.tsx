@@ -64,7 +64,7 @@ export default async function ApercuPage({ params }: Props) {
         <div className="space-y-3">
           <Link
             href="/generateur"
-            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-white transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             ← Modifier les informations
           </Link>
@@ -74,7 +74,7 @@ export default async function ApercuPage({ params }: Props) {
               <p className="text-xs text-muted-foreground mt-1">Généré le {createdAt}</p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <div className="hidden sm:block rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/60">
+              <div className="hidden sm:block rounded-full border border-foreground/20 px-3 py-1 text-xs font-medium text-foreground/60">
                 Aperçu gratuit
               </div>
               <PayButton documentId={documentId} price={price} size="sm" />
@@ -95,9 +95,9 @@ export default async function ApercuPage({ params }: Props) {
         <DocumentPreview html={doc.generatedContent ?? ""} />
 
         {/* CTA bas de page */}
-        <div className="rounded-xl border border-white/15 bg-white/5 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="rounded-xl border border-foreground/15 bg-foreground/5 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <p className="font-semibold text-white">Tout est correct ?</p>
+            <p className="font-semibold text-foreground">Tout est correct ?</p>
             <p className="text-sm text-muted-foreground mt-1 max-w-sm">
               Débloquez le PDF et le code HTML prêt à coller sur votre site — sans filigrane, à vie.
             </p>

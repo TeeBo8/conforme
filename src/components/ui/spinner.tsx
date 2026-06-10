@@ -12,7 +12,7 @@ export function Spinner({ className, size = "md" }: Props) {
     <div
       aria-label="Chargement…"
       className={cn(
-        "animate-spin rounded-full border-white/20 border-t-white",
+        "animate-spin rounded-full border-current/20 border-t-current",
         sizes[size],
         className
       )}

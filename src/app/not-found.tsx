@@ -11,7 +11,7 @@ export default function NotFound() {
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-24">
       <div className="max-w-md w-full text-center space-y-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-white/20 bg-white/5 text-2xl font-mono font-bold text-muted-foreground">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-foreground/20 bg-foreground/5 text-2xl font-mono font-bold text-muted-foreground">
           404
         </div>
         <div>

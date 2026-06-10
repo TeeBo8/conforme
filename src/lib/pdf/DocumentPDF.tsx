@@ -4,6 +4,7 @@ import {
   Page,
   Text,
   View,
+  Link,
   StyleSheet,
 } from "@react-pdf/renderer";
 import type { DocPart, Section, Block, Span } from "./parse-html";
@@ -159,7 +160,12 @@ export function DocumentPDF({ parts, generatedAt }: Props) {
         ))}
 
         <View style={s.footer} fixed>
-          <Text>ConformeFR — Document généré automatiquement</Text>
+          <Text>
+            Document généré par{" "}
+            <Link src="https://conformefr.com" style={{ color: "#888" }}>
+              conformefr.com
+            </Link>
+          </Text>
           <Text render={({ pageNumber, totalPages }) =>
             `${pageNumber} / ${totalPages}`
           } />

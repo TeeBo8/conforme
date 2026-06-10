@@ -37,22 +37,22 @@ export default function GenerateurClient({ initialData }: Props) {
             L&apos;IA rédige vos clauses personnalisées — comptez 15 à 30 secondes.
           </p>
         </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-8 space-y-5 animate-pulse">
+        <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-8 space-y-5 animate-pulse">
           <div className="space-y-2">
-            <div className="h-5 w-1/2 rounded-md bg-white/10" />
-            <div className="h-3 w-full rounded-md bg-white/10" />
-            <div className="h-3 w-5/6 rounded-md bg-white/10" />
+            <div className="h-5 w-1/2 rounded-md bg-foreground/10" />
+            <div className="h-3 w-full rounded-md bg-foreground/10" />
+            <div className="h-3 w-5/6 rounded-md bg-foreground/10" />
           </div>
           <div className="space-y-2">
-            <div className="h-4 w-1/3 rounded-md bg-white/10" />
-            <div className="h-3 w-full rounded-md bg-white/10" />
-            <div className="h-3 w-full rounded-md bg-white/10" />
-            <div className="h-3 w-4/5 rounded-md bg-white/10" />
+            <div className="h-4 w-1/3 rounded-md bg-foreground/10" />
+            <div className="h-3 w-full rounded-md bg-foreground/10" />
+            <div className="h-3 w-full rounded-md bg-foreground/10" />
+            <div className="h-3 w-4/5 rounded-md bg-foreground/10" />
           </div>
           <div className="space-y-2">
-            <div className="h-4 w-2/5 rounded-md bg-white/10" />
-            <div className="h-3 w-full rounded-md bg-white/10" />
-            <div className="h-3 w-3/4 rounded-md bg-white/10" />
+            <div className="h-4 w-2/5 rounded-md bg-foreground/10" />
+            <div className="h-3 w-full rounded-md bg-foreground/10" />
+            <div className="h-3 w-3/4 rounded-md bg-foreground/10" />
           </div>
         </div>
       </div>

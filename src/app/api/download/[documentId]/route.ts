@@ -47,7 +47,7 @@ function htmlDocument(title: string, content: string): string {
 <body>
   <h1>${title}</h1>
   ${content}
-  <div class="footer">Document généré par ConformeFR</div>
+  <div class="footer">Document généré par <a href="https://conformefr.com">ConformeFR</a> — générateur de documents légaux pour sites web français</div>
 </body>
 </html>`;
 }
@@ -58,7 +58,10 @@ export async function GET(
 ) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) {
-    return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    const target = `${req.nextUrl.pathname}${req.nextUrl.search}`;
+    return NextResponse.redirect(
+      new URL(`/connexion?redirect=${encodeURIComponent(target)}`, req.nextUrl)
+    );
   }
 
   const { documentId } = await params;

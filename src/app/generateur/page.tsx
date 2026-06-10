@@ -5,6 +5,7 @@ import GenerateurClient from "./GenerateurClient";
 export const metadata: Metadata = {
   title: "Générateur de documents légaux — ConformeFR",
   description: "Créez vos mentions légales et politique de confidentialité RGPD en 3 minutes. Aperçu gratuit, téléchargement PDF et HTML à partir de 19 €.",
+  alternates: { canonical: "/generateur" },
 };
 
 interface Props {

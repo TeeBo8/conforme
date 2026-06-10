@@ -58,7 +58,7 @@ export default function MentionsLegalesEcommercePage() {
       <main className="mx-auto max-w-3xl px-4 py-16 space-y-16">
         {/* Hero */}
         <section className="text-center space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-xs text-muted-foreground">
+          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
             ✓ LCEN + Code de la consommation — 2025
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
@@ -93,7 +93,7 @@ export default function MentionsLegalesEcommercePage() {
         </section>
 
         {/* Ce qui est inclus */}
-        <section className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-4">
+        <section className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-4">
           <h2 className="text-xl font-bold">Ce que contient votre document e-commerce</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {[
@@ -104,7 +104,7 @@ export default function MentionsLegalesEcommercePage() {
               "Références aux garanties légales de conformité et CGV",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="text-white mt-0.5">✓</span>
+                <span className="text-foreground mt-0.5">✓</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -126,8 +126,8 @@ export default function MentionsLegalesEcommercePage() {
           <h2 className="text-2xl font-bold">Questions fréquentes</h2>
           <dl className="space-y-6">
             {faq.map(({ question, answer }) => (
-              <div key={question} className="border-b border-white/10 pb-6 last:border-0 last:pb-0">
-                <dt className="font-semibold text-white mb-2">{question}</dt>
+              <div key={question} className="border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
+                <dt className="font-semibold text-foreground mb-2">{question}</dt>
                 <dd className="text-sm text-muted-foreground leading-relaxed">{answer}</dd>
               </div>
             ))}
@@ -135,7 +135,7 @@ export default function MentionsLegalesEcommercePage() {
         </section>
 
         {/* CTA bas */}
-        <section className="text-center space-y-4 rounded-xl border border-white/10 bg-white/5 p-8">
+        <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Sécurisez votre boutique en ligne</h2>
           <p className="text-muted-foreground">
             Générez vos mentions légales e-commerce en 3 minutes. Aperçu gratuit.

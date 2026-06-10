@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,11 +21,30 @@ export function ConnexionForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const redirect = searchParams.get("redirect") ?? "/dashboard";
+  const rawRedirect = searchParams.get("redirect") ?? "/dashboard";
+  // Uniquement des chemins internes (anti open-redirect)
+  const redirect =
+    rawRedirect.startsWith("/") && !rawRedirect.startsWith("//")
+      ? rawRedirect
+      : "/dashboard";
+
+  const redirectedRef = useRef(false);
+  const goToRedirect = useCallback(() => {
+    if (redirectedRef.current) return;
+    redirectedRef.current = true;
+    if (redirect.startsWith("/api/")) {
+      // Lien de téléchargement direct (ex: email) : déclenche le download
+      // puis affiche le dashboard
+      window.location.assign(redirect);
+      router.replace("/dashboard");
+    } else {
+      router.replace(redirect);
+    }
+  }, [redirect, router]);
 
   useEffect(() => {
-    if (session?.user) router.replace(redirect);
-  }, [session, router, redirect]);
+    if (session?.user) goToRedirect();
+  }, [session, goToRedirect]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -50,7 +69,7 @@ export function ConnexionForm() {
           return;
         }
       }
-      router.replace(redirect);
+      goToRedirect();
     } finally {
       setLoading(false);
     }
@@ -70,12 +89,12 @@ export function ConnexionForm() {
       </div>
 
       {/* Tabs */}
-      <div className="flex rounded-lg border border-white/10 p-0.5">
+      <div className="flex rounded-lg border border-foreground/10 p-0.5">
         <button
           className={`flex-1 rounded-md py-2 text-xs font-medium transition-colors ${
             tab === "connexion"
-              ? "bg-white text-black"
-              : "text-muted-foreground hover:text-white"
+              ? "bg-foreground text-background"
+              : "text-muted-foreground hover:text-foreground"
           }`}
           onClick={() => { setTab("connexion"); setError(null); }}
         >
@@ -84,8 +103,8 @@ export function ConnexionForm() {
         <button
           className={`flex-1 rounded-md py-2 text-xs font-medium transition-colors ${
             tab === "inscription"
-              ? "bg-white text-black"
-              : "text-muted-foreground hover:text-white"
+              ? "bg-foreground text-background"
+              : "text-muted-foreground hover:text-foreground"
           }`}
           onClick={() => { setTab("inscription"); setError(null); }}
         >

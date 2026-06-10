@@ -128,7 +128,7 @@ export function buildMentionsLegales(vars: MentionsLegalesVars): string {
 ${sections.join("\n\n")}
 
 <footer class="document-disclaimer">
-  <p><em>Document généré par <strong>ConformeFR</strong>. Ce document a valeur informative et ne constitue pas un conseil juridique personnalisé. Pour toute situation complexe, consultez un professionnel du droit.</em></p>
+  <p><em>Document généré par <strong><a href="https://conformefr.com">ConformeFR</a></strong> — générateur de documents légaux pour sites web français. Ce document a valeur informative et ne constitue pas un conseil juridique personnalisé. Pour toute situation complexe, consultez un professionnel du droit.</em></p>
 </footer>
 </article>`;
 }
