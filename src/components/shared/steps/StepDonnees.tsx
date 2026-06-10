@@ -289,8 +289,8 @@ function ToggleChip({
       onClick={onToggle}
       className={`px-3 py-1.5 rounded-md border text-sm transition-colors ${
         selected
-          ? "border-white bg-white/10 text-white"
-          : "border-border text-muted-foreground hover:border-white/40 hover:text-foreground"
+          ? "border-foreground bg-foreground/10 text-foreground"
+          : "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"
       }`}
     >
       {label}

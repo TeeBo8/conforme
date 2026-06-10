@@ -56,26 +56,26 @@ export function AuthModal({ onSuccess, onClose }: Props) {
       style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="w-full max-w-sm rounded-xl border border-white/15 bg-black p-6 shadow-2xl">
+      <div className="w-full max-w-sm rounded-xl border border-border bg-background p-6 shadow-2xl">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-base font-semibold">
             {tab === "connexion" ? "Connexion" : "Créer un compte"}
           </h2>
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-white transition-colors text-lg leading-none"
+            className="text-muted-foreground hover:text-foreground transition-colors text-lg leading-none"
           >
             ×
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="mb-5 flex rounded-lg border border-white/10 p-0.5">
+        <div className="mb-5 flex rounded-lg border border-foreground/10 p-0.5">
           <button
             className={`flex-1 rounded-md py-1.5 text-xs font-medium transition-colors ${
               tab === "connexion"
-                ? "bg-white text-black"
-                : "text-muted-foreground hover:text-white"
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => { setTab("connexion"); setError(null); }}
           >
@@ -84,8 +84,8 @@ export function AuthModal({ onSuccess, onClose }: Props) {
           <button
             className={`flex-1 rounded-md py-1.5 text-xs font-medium transition-colors ${
               tab === "inscription"
-                ? "bg-white text-black"
-                : "text-muted-foreground hover:text-white"
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => { setTab("inscription"); setError(null); }}
           >
@@ -155,7 +155,7 @@ export function AuthModal({ onSuccess, onClose }: Props) {
             <>
               Pas encore de compte ?{" "}
               <button
-                className="underline hover:text-white transition-colors"
+                className="underline hover:text-foreground transition-colors"
                 onClick={() => { setTab("inscription"); setError(null); }}
               >
                 En créer un
@@ -165,7 +165,7 @@ export function AuthModal({ onSuccess, onClose }: Props) {
             <>
               Déjà un compte ?{" "}
               <button
-                className="underline hover:text-white transition-colors"
+                className="underline hover:text-foreground transition-colors"
                 onClick={() => { setTab("connexion"); setError(null); }}
               >
                 Se connecter

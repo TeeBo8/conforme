@@ -60,25 +60,25 @@ export default function BlogPage() {
         {articles.map((article) => (
           <article
             key={article.title}
-            className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-3"
+            className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-3"
           >
             <div className="flex items-center gap-2">
-              <span className="rounded-full border border-white/15 px-2.5 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 text-xs text-muted-foreground">
                 {article.tag}
               </span>
               <span className="text-xs text-muted-foreground">Bientôt disponible</span>
             </div>
-            <h2 className="font-semibold text-white leading-snug">{article.title}</h2>
+            <h2 className="font-semibold text-foreground leading-snug">{article.title}</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">{article.description}</p>
           </article>
         ))}
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-white/5 p-6 text-center space-y-3">
+      <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 text-center space-y-3">
         <p className="text-sm font-medium">Besoin d&apos;un document légal maintenant ?</p>
         <Link
           href="/generateur"
-          className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition-colors"
+          className="inline-flex items-center justify-center rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
           Générer mon document →
         </Link>

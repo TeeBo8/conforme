@@ -67,7 +67,7 @@ export default async function SuccesPage({ searchParams }: Props) {
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-6">
 
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-white/20 bg-white/5 text-2xl">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-foreground/20 bg-foreground/5 text-2xl">
           ✓
         </div>
 
@@ -79,8 +79,8 @@ export default async function SuccesPage({ searchParams }: Props) {
           </p>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-white/5 p-5 text-left space-y-2">
-          <p className="text-sm font-medium text-white">Ce que vous avez obtenu :</p>
+        <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-5 text-left space-y-2">
+          <p className="text-sm font-medium text-foreground">Ce que vous avez obtenu :</p>
           <ul className="text-sm text-muted-foreground space-y-1">
             <li>✓ Fichier PDF haute qualité sans filigrane</li>
             <li>✓ Code HTML prêt à intégrer sur votre site</li>
@@ -97,13 +97,13 @@ export default async function SuccesPage({ searchParams }: Props) {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/dashboard"
-            className="inline-flex items-center justify-center rounded-md bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90 transition-colors"
+            className="inline-flex items-center justify-center rounded-md bg-foreground text-background px-4 py-2 text-sm font-medium hover:bg-foreground/90 transition-colors"
           >
             Voir mes documents →
           </Link>
           <Link
             href="/generateur"
-            className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium hover:bg-white/10 transition-colors"
+            className="inline-flex items-center justify-center rounded-md border border-foreground/15 bg-foreground/5 px-4 py-2 text-sm font-medium hover:bg-foreground/10 transition-colors"
           >
             Générer un autre document
           </Link>

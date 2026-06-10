@@ -77,4 +77,9 @@ describe("buildMentionsLegales", () => {
     const result = buildMentionsLegales(BASE);
     expect(result).toContain("Droit applicable");
   });
+
+  it("contient le backlink vers conformefr.com dans le footer", () => {
+    const result = buildMentionsLegales(BASE);
+    expect(result).toContain('<a href="https://conformefr.com">ConformeFR</a>');
+  });
 });

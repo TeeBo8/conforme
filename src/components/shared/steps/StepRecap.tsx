@@ -131,7 +131,7 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
         )}
       </div>
 
-      <div className="rounded-lg border border-white/20 bg-white/5 p-4 space-y-2">
+      <div className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-2">
         <div className="flex items-center justify-between">
           <span className="font-medium">{DOC_LABELS[data.documentType]}</span>
           <span className="font-bold text-xl">{price}</span>

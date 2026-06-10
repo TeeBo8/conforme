@@ -80,4 +80,9 @@ describe("buildPolitiqueConf", () => {
     expect(result).toContain("<header>");
     expect(result).toContain("<footer");
   });
+
+  it("contient le backlink vers conformefr.com dans le footer", () => {
+    const result = buildPolitiqueConf(BASE);
+    expect(result).toContain('<a href="https://conformefr.com">ConformeFR</a>');
+  });
 });

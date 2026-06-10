@@ -64,7 +64,7 @@ export function DocumentForm({ onGenerate, isGenerating, initialData }: Props) {
             <div
               key={i}
               className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                i <= step ? "bg-white" : "bg-white/15"
+                i <= step ? "bg-foreground" : "bg-foreground/15"
               }`}
             />
           ))}

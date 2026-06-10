@@ -63,7 +63,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
       <main className="mx-auto max-w-3xl px-4 py-16 space-y-16">
         {/* Hero */}
         <section className="text-center space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-xs text-muted-foreground">
+          <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
             ✓ Conforme RGPD — approuvé par la CNIL
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
@@ -89,7 +89,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
             Le RGPD est entré en application le 25 mai 2018. Contrairement à une idée reçue, il
             ne s&apos;applique pas qu&apos;aux grandes entreprises. Dès lors que vous collectez
             une adresse email, utilisez Google Analytics ou proposez un formulaire de contact,
-            vous traitez des <strong className="text-white">données personnelles</strong> et devez
+            vous traitez des <strong className="text-foreground">données personnelles</strong> et devez
             en informer vos visiteurs.
           </p>
           <p className="text-muted-foreground leading-relaxed">
@@ -100,7 +100,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
         </section>
 
         {/* Données collectées */}
-        <section className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-4">
+        <section className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-4">
           <h2 className="text-xl font-bold">Données traitées couvertes par le document</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {[
@@ -112,7 +112,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
               "Données de paiement (via Stripe, PayPal…)",
             ].map((item) => (
               <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className="text-white mt-0.5">✓</span>
+                <span className="text-foreground mt-0.5">✓</span>
                 <span>{item}</span>
               </div>
             ))}
@@ -124,8 +124,8 @@ export default function PolitiqueConfidentialiteRgpdPage() {
           <h2 className="text-2xl font-bold">Questions fréquentes</h2>
           <dl className="space-y-6">
             {faq.map(({ question, answer }) => (
-              <div key={question} className="border-b border-white/10 pb-6 last:border-0 last:pb-0">
-                <dt className="font-semibold text-white mb-2">{question}</dt>
+              <div key={question} className="border-b border-foreground/10 pb-6 last:border-0 last:pb-0">
+                <dt className="font-semibold text-foreground mb-2">{question}</dt>
                 <dd className="text-sm text-muted-foreground leading-relaxed">{answer}</dd>
               </div>
             ))}
@@ -133,7 +133,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
         </section>
 
         {/* CTA bas */}
-        <section className="text-center space-y-4 rounded-xl border border-white/10 bg-white/5 p-8">
+        <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Devenez conforme au RGPD dès aujourd&apos;hui</h2>
           <p className="text-muted-foreground">
             Générez votre politique de confidentialité en 3 minutes. Aperçu gratuit.
