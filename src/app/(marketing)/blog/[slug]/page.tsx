@@ -94,8 +94,8 @@ export default async function BlogArticlePage({ params }: Props) {
             [&_li>strong]:text-foreground
             [&_a]:text-foreground [&_a]:underline [&_a]:underline-offset-2 [&_a]:decoration-foreground/30 [&_a]:hover:decoration-foreground
             [&_strong]:text-foreground [&_strong]:font-semibold
-            [&_.callout]:rounded-xl [&_.callout]:border [&_.callout]:border-amber-500/25 [&_.callout]:bg-amber-500/5 [&_.callout]:p-5 [&_.callout]:my-8
-            [&_.callout_p]:text-amber-200/80 [&_.callout_strong]:text-amber-200
+            [&_.callout]:rounded-xl [&_.callout]:border [&_.callout]:border-amber-300 [&_.callout]:dark:border-amber-500/25 [&_.callout]:bg-amber-50 [&_.callout]:dark:bg-amber-500/5 [&_.callout]:p-5 [&_.callout]:my-8
+            [&_.callout_p]:text-amber-900 [&_.callout_p]:dark:text-amber-200/80 [&_.callout_strong]:text-amber-950 [&_.callout_strong]:dark:text-amber-200
             [&_.cta]:rounded-xl [&_.cta]:border [&_.cta]:border-foreground/10 [&_.cta]:bg-foreground/5 [&_.cta]:p-8 [&_.cta]:my-8 [&_.cta]:text-center [&_.cta]:space-y-3
             [&_.cta-title]:font-semibold [&_.cta-title]:text-foreground [&_.cta-title]:text-lg
             [&_.cta-text]:text-sm [&_.cta-text]:text-muted-foreground
