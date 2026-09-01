@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 
 const upcoming = [
-  { title: "Amendes CNIL : ce que risquent vraiment les petits sites", tag: "RGPD" },
   { title: "Politique de confidentialité RGPD : le guide complet pour TPE", tag: "RGPD" },
   { title: "Auto-entrepreneur : les 3 documents légaux obligatoires pour votre site", tag: "Auto-entrepreneur" },
   { title: "Site vitrine : êtes-vous en règle ? Checklist en 10 points", tag: "Site vitrine" },

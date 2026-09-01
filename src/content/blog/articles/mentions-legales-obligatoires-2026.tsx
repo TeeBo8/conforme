@@ -52,7 +52,7 @@ export default function Article() {
       <h2>Qui est concerné par cette obligation ?</h2>
       <p>
         La loi n° 2004-575 du 21 juin 2004 pour la confiance en l&apos;économie numérique — la{" "}
-        <strong>LCEN</strong> — impose à toute personne éditant un service de communication au
+        <strong>LCEN</strong>{" "}— impose à toute personne éditant un service de communication au
         public en ligne à titre professionnel d&apos;afficher ses mentions légales. Concrètement,
         cela concerne :
       </p>
@@ -127,7 +127,7 @@ export default function Article() {
       </p>
       <ul>
         <li>
-          <strong>Auto-entrepreneur :</strong> pas de capital social ni de RCS à mentionner,
+          <strong>Auto-entrepreneur :</strong>{" "}pas de capital social ni de RCS à mentionner,
           mais le numéro SIRET reste obligatoire. Voir notre guide dédié{" "}
           <Link href="/mentions-legales-auto-entrepreneur">
             mentions légales auto-entrepreneur
@@ -135,12 +135,12 @@ export default function Article() {
           .
         </li>
         <li>
-          <strong>Site vitrine :</strong> le socle standard suffit dans la grande majorité des
+          <strong>Site vitrine :</strong>{" "}le socle standard suffit dans la grande majorité des
           cas. Détails dans notre guide{" "}
           <Link href="/mentions-legales-site-vitrine">mentions légales site vitrine</Link>.
         </li>
         <li>
-          <strong>E-commerce :</strong> obligations renforcées — conditions générales de vente
+          <strong>E-commerce :</strong>{" "}obligations renforcées — conditions générales de vente
           (CGV), modalités de rétractation, informations sur le médiateur de la consommation.
           Voir notre guide{" "}
           <Link href="/mentions-legales-ecommerce">mentions légales e-commerce</Link>.
@@ -149,7 +149,7 @@ export default function Article() {
 
       <div className="callout">
         <p>
-          <strong>Sanctions encourues.</strong> L&apos;absence ou l&apos;inexactitude des
+          <strong>Sanctions encourues.</strong>{" "}L&apos;absence ou l&apos;inexactitude des
           mentions légales est punie par l&apos;article 6-VI-2 de la LCEN d&apos;un an
           d&apos;emprisonnement et de 75 000 € d&apos;amende pour une personne physique — jusqu&apos;à
           375 000 € pour une personne morale. En pratique, les contrôles ciblent surtout les

@@ -1,10 +1,15 @@
 import type { BlogArticle } from "./types";
 import * as mentionsLegalesObligatoires2026 from "./articles/mentions-legales-obligatoires-2026";
+import * as amendesCnilPetitsSites from "./articles/amendes-cnil-petits-sites";
 
 export const articles: BlogArticle[] = [
   {
     meta: mentionsLegalesObligatoires2026.meta,
     Body: mentionsLegalesObligatoires2026.default,
+  },
+  {
+    meta: amendesCnilPetitsSites.meta,
+    Body: amendesCnilPetitsSites.default,
   },
 ];
 
