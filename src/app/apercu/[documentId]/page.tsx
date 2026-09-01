@@ -83,11 +83,11 @@ export default async function ApercuPage({ params }: Props) {
         </div>
 
         {/* Notice */}
-        <div className="flex items-start gap-3 rounded-lg border border-amber-500/25 bg-amber-500/5 px-4 py-3">
-          <span className="text-amber-400 mt-0.5 shrink-0 text-base">⚠</span>
-          <p className="text-sm text-amber-200/80">
+        <div className="flex items-start gap-3 rounded-lg border border-amber-300 dark:border-amber-500/25 bg-amber-50 dark:bg-amber-500/5 px-4 py-3">
+          <span className="text-amber-600 dark:text-amber-400 mt-0.5 shrink-0 text-base">⚠</span>
+          <p className="text-sm text-amber-900 dark:text-amber-200/80">
             Ceci est un aperçu gratuit. Vérifiez les informations puis débloquez le téléchargement PDF et HTML sans filigrane pour{" "}
-            <strong className="text-amber-200">{price}</strong> — paiement sécurisé Stripe.
+            <strong className="text-amber-950 dark:text-amber-200">{price}</strong> — paiement sécurisé Stripe.
           </p>
         </div>
 

@@ -109,8 +109,8 @@ export default function MentionsLegalesEcommercePage() {
               </li>
             ))}
           </ul>
-          <div className="mt-4 rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-            <p className="text-xs text-amber-200/80">
+          <div className="mt-4 rounded-lg border border-amber-300 dark:border-amber-500/20 bg-amber-50 dark:bg-amber-500/5 p-3">
+            <p className="text-xs text-amber-900 dark:text-amber-200/80">
               <strong>Note :</strong> Les mentions légales n&apos;incluent pas les CGV. Pour une boutique
               en ligne complète, nous recommandons le{" "}
               <Link href="/generateur?type=pack" className="underline underline-offset-2">
