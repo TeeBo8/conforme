@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articles } from "@/content/blog/registry";
 
 export const metadata: Metadata = {
   title: "Blog — Droit du web pour entrepreneurs | ConformeFR",
@@ -8,45 +9,25 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 };
 
-const articles = [
-  {
-    title: "Mentions légales obligatoires en France : le guide complet 2025",
-    description:
-      "Tout ce que vous devez savoir sur les mentions légales : textes de loi, contenu obligatoire, sanctions encourues et cas pratiques selon votre statut.",
-    tag: "Mentions légales",
-    href: null,
-  },
-  {
-    title: "RGPD pour les TPE : 5 choses à faire cette semaine",
-    description:
-      "Le RGPD n'est pas réservé aux grandes entreprises. Voici les 5 actions prioritaires à mettre en place pour votre site, même sans juriste.",
-    tag: "RGPD",
-    href: null,
-  },
-  {
-    title: "Cookies : bannière de consentement conforme CNIL en 2025",
-    description:
-      "Les exigences de la CNIL sur les cookies ont évolué. On vous explique ce qui est obligatoire, ce qui est interdit, et comment vous conformer simplement.",
-    tag: "Cookies",
-    href: null,
-  },
-  {
-    title: "Auto-entrepreneur : quelles obligations légales pour votre site web ?",
-    description:
-      "Mentions légales, politique de confidentialité, CGV… Le point sur les obligations légales spécifiques aux auto-entrepreneurs qui ont un site internet.",
-    tag: "Auto-entrepreneur",
-    href: null,
-  },
-  {
-    title: "E-commerce : checklist conformité légale avant de lancer votre boutique",
-    description:
-      "Avant d'ouvrir votre boutique en ligne, voici tous les documents légaux obligatoires : mentions légales, CGV, politique de retour, protection des données.",
-    tag: "E-commerce",
-    href: null,
-  },
+const upcoming = [
+  { title: "Amendes CNIL : ce que risquent vraiment les petits sites", tag: "RGPD" },
+  { title: "Politique de confidentialité RGPD : le guide complet pour TPE", tag: "RGPD" },
+  { title: "Auto-entrepreneur : les 3 documents légaux obligatoires pour votre site", tag: "Auto-entrepreneur" },
+  { title: "Site vitrine : êtes-vous en règle ? Checklist en 10 points", tag: "Site vitrine" },
+  { title: "E-commerce : mentions légales + CGV, ce qui change", tag: "E-commerce" },
+  { title: "Hébergeur, directeur de publication, SIRET : qui mettre dans vos mentions légales ?", tag: "Mentions légales" },
+  { title: "Cookies et RGPD : faut-il une bannière sur votre site ?", tag: "Cookies" },
+  { title: "Copier les mentions légales d'un concurrent : pourquoi c'est une (très) mauvaise idée", tag: "Mentions légales" },
+  { title: "Freelance : peut-on mettre son adresse perso dans les mentions légales ?", tag: "Auto-entrepreneur" },
+  { title: "RGPD 2026 : ce qui a changé, ce qui arrive", tag: "RGPD" },
+  { title: "Combien coûte la mise en conformité d'un site ?", tag: "Guide" },
 ];
 
 export default function BlogPage() {
+  const sorted = [...articles].sort(
+    (a, b) => new Date(b.meta.publishedAt).getTime() - new Date(a.meta.publishedAt).getTime()
+  );
+
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 space-y-12">
       <div className="space-y-4">
@@ -57,10 +38,22 @@ export default function BlogPage() {
       </div>
 
       <div className="space-y-6">
-        {articles.map((article) => (
+        {sorted.map(({ meta }) => (
+          <Link key={meta.slug} href={`/blog/${meta.slug}`} className="block group">
+            <article className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-3 group-hover:border-foreground/25 transition-colors">
+              <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 text-xs text-muted-foreground">
+                {meta.tag}
+              </span>
+              <h2 className="font-semibold text-foreground leading-snug">{meta.title}</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">{meta.description}</p>
+            </article>
+          </Link>
+        ))}
+
+        {upcoming.map((article) => (
           <article
             key={article.title}
-            className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-3"
+            className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-3 opacity-60"
           >
             <div className="flex items-center gap-2">
               <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 text-xs text-muted-foreground">
@@ -69,7 +62,6 @@ export default function BlogPage() {
               <span className="text-xs text-muted-foreground">Bientôt disponible</span>
             </div>
             <h2 className="font-semibold text-foreground leading-snug">{article.title}</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">{article.description}</p>
           </article>
         ))}
       </div>
