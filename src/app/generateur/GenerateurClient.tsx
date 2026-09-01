@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { track } from "@vercel/analytics";
 import { DocumentForm } from "@/components/shared/DocumentForm";
 import { Spinner } from "@/components/ui/spinner";
 import { api } from "@/lib/trpc";
@@ -15,7 +16,8 @@ export default function GenerateurClient({ initialData }: Props) {
   const router = useRouter();
 
   const generateMutation = api.document.generateDocument.useMutation({
-    onSuccess({ documentId }) {
+    onSuccess({ documentId }, variables) {
+      track("Aperçu créé", { documentType: variables.documentType });
       router.push(`/apercu/${documentId}`);
     },
     onError(err) {
@@ -24,6 +26,7 @@ export default function GenerateurClient({ initialData }: Props) {
   });
 
   function handleGenerate(data: DocumentFormData) {
+    track("Clic Générer", { documentType: data.documentType });
     generateMutation.mutate(data);
   }
 

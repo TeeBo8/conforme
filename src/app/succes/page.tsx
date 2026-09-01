@@ -5,6 +5,7 @@ import { getStripe } from "@/lib/stripe";
 import { db } from "@/server/db";
 import { documents, orders } from "@/server/db/schema";
 import { sendDocumentUnlocked } from "@/lib/resend";
+import { TrackPurchase } from "./TrackPurchase";
 
 export const metadata: Metadata = {
   title: "Paiement confirmé — ConformeFR",
@@ -15,24 +16,25 @@ interface Props {
   searchParams: Promise<{ session_id?: string }>;
 }
 
-async function confirmPayment(sessionId: string) {
+async function confirmPayment(sessionId: string): Promise<{ documentType: string } | null> {
   try {
     const session = await getStripe().checkout.sessions.retrieve(sessionId);
-    if (session.payment_status !== "paid") return;
+    if (session.payment_status !== "paid") return null;
 
     const documentId = session.metadata?.documentId;
     const userId = session.metadata?.userId;
     const customerEmail = session.customer_details?.email ?? session.customer_email;
 
-    if (!documentId) return;
+    if (!documentId) return null;
 
     const [existing] = await db
-      .select({ status: documents.status })
+      .select({ status: documents.status, type: documents.type })
       .from(documents)
       .where(eq(documents.id, documentId))
       .limit(1);
 
-    if (existing?.status === "paid") return;
+    if (!existing) return null;
+    if (existing.status === "paid") return { documentType: existing.type };
 
     await db
       .update(orders)
@@ -51,21 +53,24 @@ async function confirmPayment(sessionId: string) {
         downloadUrl: `${appUrl}/api/download/${documentId}`,
       }).catch((err) => console.error("Failed to send email:", err));
     }
+
+    return { documentType: existing.type };
   } catch (err) {
     console.error("[succes] confirmPayment error:", err);
+    return null;
   }
 }
 
 export default async function SuccesPage({ searchParams }: Props) {
   const { session_id } = await searchParams;
 
-  if (session_id) {
-    await confirmPayment(session_id);
-  }
+  const confirmed = session_id ? await confirmPayment(session_id) : null;
 
   return (
     <main className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center space-y-6">
+
+        {confirmed && <TrackPurchase documentType={confirmed.documentType} />}
 
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-foreground/20 bg-foreground/5 text-2xl">
           ✓
