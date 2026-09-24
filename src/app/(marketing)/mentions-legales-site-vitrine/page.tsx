@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Mentions légales site vitrine — Générateur conforme LCEN | ConformeFR",
+  title: "Mentions légales site vitrine — Générateur basé sur la LCEN | ConformeFR",
   description:
-    "Créez les mentions légales de votre site vitrine en 3 minutes. Conformes à la loi LCEN, adaptées aux TPE et PME. Aperçu gratuit, PDF 19 €.",
+    "Créez les mentions légales de votre site vitrine en 3 minutes. Rédigées d'après la loi LCEN, pour les TPE et PME. Aperçu gratuit, PDF 19 €.",
   alternates: { canonical: "/mentions-legales-site-vitrine" },
 };
 
@@ -59,14 +59,14 @@ export default function MentionsLegalesSiteVitrineePage() {
         {/* Hero */}
         <section className="text-center space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
-            ✓ Conforme LCEN — droit français
+            Loi LCEN — droit français
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
             Mentions légales<br />
             <span className="text-muted-foreground">site vitrine</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Des mentions légales conformes à la loi LCEN pour votre site vitrine,
+            Des mentions légales rédigées d&apos;après la loi LCEN pour votre site vitrine,
             générées en 3 minutes. Code HTML prêt à intégrer dans votre CMS.
           </p>
           <Button asChild size="lg" className="text-base px-8">
@@ -87,7 +87,7 @@ export default function MentionsLegalesSiteVitrineePage() {
           </p>
           <p className="text-muted-foreground leading-relaxed">
             ConformeFR génère un document sur mesure, adapté à votre forme juridique (auto-entrepreneur,
-            SARL, SAS, association…) et à votre secteur d&apos;activité. Le HTML produit s&apos;intègre
+            SARL, SAS, association…). Le HTML produit s&apos;intègre
             en quelques secondes dans WordPress, Wix, Webflow ou tout autre CMS.
           </p>
         </section>
@@ -98,7 +98,7 @@ export default function MentionsLegalesSiteVitrineePage() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             {[
               "Identification de l'éditeur (raison sociale, forme juridique, SIRET/RCS, capital)",
-              "Directeur de la publication et ses coordonnées",
+              "Directeur de la publication",
               "Informations complètes sur l'hébergeur du site",
               "Clause de propriété intellectuelle sur les contenus",
               "Limitation de responsabilité et droits applicables",

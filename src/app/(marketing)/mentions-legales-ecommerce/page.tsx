@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Mentions légales e-commerce — Obligations légales boutique en ligne | ConformeFR",
   description:
-    "Générez les mentions légales de votre boutique en ligne. Conformes au droit français (LCEN + Code de la consommation). Aperçu gratuit, PDF 19 €.",
+    "Générez les mentions légales de votre boutique en ligne. Rédigées d'après la loi LCEN. Aperçu gratuit, PDF 19 €.",
   alternates: { canonical: "/mentions-legales-ecommerce" },
 };
 
@@ -13,7 +13,7 @@ const faq = [
   {
     question: "Quelles mentions légales sont obligatoires pour un site e-commerce ?",
     answer:
-      "Un site e-commerce doit afficher : l'identification complète du vendeur (raison sociale, adresse, SIRET), les coordonnées permettant de le contacter rapidement, le numéro de TVA intracommunautaire (si assujetti), l'indication de l'inscription au RCS ou RM, les informations sur l'hébergeur. S'ajoutent les CGV, la politique de retour et la politique de confidentialité.",
+      "Un site e-commerce doit afficher : l'identification complète du vendeur (raison sociale, adresse, SIRET), les coordonnées permettant de le contacter rapidement, le numéro de TVA intracommunautaire (si assujetti), l'indication de l'inscription au RCS (ou au RNE), les informations sur l'hébergeur. S'ajoutent les CGV, la politique de retour et la politique de confidentialité.",
   },
   {
     question: "Les mentions légales d'un e-commerce sont-elles différentes d'un site vitrine ?",
@@ -59,15 +59,15 @@ export default function MentionsLegalesEcommercePage() {
         {/* Hero */}
         <section className="text-center space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
-            ✓ LCEN + Code de la consommation — 2025
+            Loi LCEN — droit français
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
             Mentions légales<br />
             <span className="text-muted-foreground">e-commerce</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Des mentions légales adaptées à votre boutique en ligne, conformes
-            au droit français de la vente à distance. Aperçu immédiat et gratuit.
+            Des mentions légales qui identifient clairement votre boutique en ligne
+            et son hébergeur. Aperçu immédiat et gratuit.
           </p>
           <Button asChild size="lg" className="text-base px-8">
             <Link href="/generateur?type=mentions_legales&siteType=ecommerce">
@@ -97,11 +97,10 @@ export default function MentionsLegalesEcommercePage() {
           <h2 className="text-xl font-bold">Ce que contient votre document e-commerce</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {[
-              "Identification complète du vendeur (raison sociale, RCS/RM, TVA si applicable)",
-              "Coordonnées complètes pour les réclamations clients",
+              "Identification du vendeur (dénomination, forme juridique, SIRET, RCS)",
+              "Coordonnées de contact",
               "Informations sur l'hébergement technique du site",
-              "Clauses propriété intellectuelle adaptées au commerce en ligne",
-              "Références aux garanties légales de conformité et CGV",
+              "Clause de propriété intellectuelle",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
                 <span className="text-foreground mt-0.5">✓</span>

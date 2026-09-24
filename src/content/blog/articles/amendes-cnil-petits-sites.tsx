@@ -33,7 +33,7 @@ export const meta: BlogArticleMeta = {
     {
       question: "Comment vérifier que mon site est conforme sans faire appel à un avocat ?",
       answer:
-        "Pour les obligations documentaires de base — mentions légales et politique de confidentialité — ConformeFR génère un document personnalisé et conforme en 3 minutes, avec un aperçu gratuit avant tout paiement.",
+        "Pour les obligations documentaires de base — mentions légales et politique de confidentialité — ConformeFR génère un document personnalisé en 3 minutes, avec un aperçu gratuit avant tout paiement.",
     },
   ],
 };
@@ -151,7 +151,7 @@ export default function Article() {
       <div className="cta">
         <p className="cta-title">Vos documents légaux ne sont pas à jour ?</p>
         <p className="cta-text">
-          Générez des mentions légales et une politique de confidentialité conformes en 3
+          Générez des mentions légales et une politique de confidentialité en 3
           minutes. Aperçu gratuit, vous ne payez que si vous téléchargez.
         </p>
         <Link href="/generateur" className="cta-button">

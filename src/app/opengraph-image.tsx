@@ -33,7 +33,7 @@ export default function OpengraphImage() {
             marginBottom: 44,
           }}
         >
-          Conforme RGPD &amp; loi LCEN — droit français
+          Loi LCEN &amp; RGPD — droit français
         </div>
         <div
           style={{

@@ -4,12 +4,16 @@ import { eq } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { db } from "@/server/db";
 import { documents, orders } from "@/server/db/schema";
-import { getStripe, getPriceForType, getLabelForType } from "@/lib/stripe";
+import { getStripe, getPriceForType, getLabelForType, PAYMENTS_ENABLED } from "@/lib/stripe";
 
 export const orderRouter = createTRPCRouter({
   createOrder: protectedProcedure
     .input(z.object({ documentId: z.string().uuid() }))
     .mutation(async ({ input, ctx }) => {
+      if (!PAYMENTS_ENABLED) {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Le paiement est désactivé." });
+      }
+
       const rows = await db
         .select()
         .from(documents)

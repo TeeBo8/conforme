@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Politique de confidentialité RGPD petite entreprise — ConformeFR",
   description:
-    "Générez une politique de confidentialité RGPD adaptée à votre petite entreprise ou TPE. Conforme au règlement européen. Aperçu gratuit, PDF 19 €.",
+    "Générez une politique de confidentialité RGPD adaptée à votre petite entreprise ou TPE. Aperçu gratuit, PDF 19 €.",
   alternates: { canonical: "/politique-confidentialite-rgpd-petite-entreprise" },
 };
 
@@ -64,15 +64,15 @@ export default function PolitiqueConfidentialiteRgpdPage() {
         {/* Hero */}
         <section className="text-center space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
-            ✓ Conforme RGPD — approuvé par la CNIL
+            RGPD — règlement (UE) 2016/679
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
             Politique de confidentialité RGPD<br />
             <span className="text-muted-foreground">petite entreprise</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Une politique de confidentialité sur mesure, adaptée à votre activité et conforme
-            au règlement européen RGPD. Généré en 3 minutes.
+            Une politique de confidentialité sur mesure, rédigée à partir des informations
+            exigées par le RGPD. Généré en 3 minutes.
           </p>
           <Button asChild size="lg" className="text-base px-8">
             <Link href="/generateur?type=politique_confidentialite">
@@ -134,7 +134,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
 
         {/* CTA bas */}
         <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
-          <h2 className="text-2xl font-bold">Devenez conforme au RGPD dès aujourd&apos;hui</h2>
+          <h2 className="text-2xl font-bold">Rédigez votre politique de confidentialité dès aujourd&apos;hui</h2>
           <p className="text-muted-foreground">
             Générez votre politique de confidentialité en 3 minutes. Aperçu gratuit.
           </p>

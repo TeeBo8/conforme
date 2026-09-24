@@ -52,7 +52,6 @@ const FINALITES_LABELS: Record<string, string> = {
 export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
   const hasDonnees =
     data.documentType === "politique_confidentialite" || data.documentType === "pack";
-  const price = data.documentType === "pack" ? "29 €" : "19 €";
 
   return (
     <div className="space-y-6">
@@ -132,12 +131,9 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
       </div>
 
       <div className="rounded-lg border border-foreground/20 bg-foreground/5 p-4 space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="font-medium">{DOC_LABELS[data.documentType]}</span>
-          <span className="font-bold text-xl">{price}</span>
-        </div>
+        <span className="font-medium">{DOC_LABELS[data.documentType]}</span>
         <p className="text-xs text-muted-foreground">
-          L&apos;aperçu est gratuit — le paiement débloque le téléchargement PDF et HTML sans filigrane.
+          Gratuit, sans inscription.
         </p>
       </div>
 

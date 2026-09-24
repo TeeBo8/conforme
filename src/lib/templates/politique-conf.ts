@@ -4,6 +4,7 @@ import type {
   Finalite,
   TypeCookie,
 } from "./types";
+import { escapeVars } from "./escape";
 
 function today(): string {
   return new Date().toLocaleDateString("fr-FR", {
@@ -100,7 +101,7 @@ export function buildPolitiqueConf(vars: PolitiqueConfVars): string {
     dureeConservation,
     transfertHorsUE,
     paysTransfert,
-  } = vars;
+  } = escapeVars(vars);
 
   let n = 0;
   const s = () => String(++n);

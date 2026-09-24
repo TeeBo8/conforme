@@ -28,7 +28,7 @@ export const meta: BlogArticleMeta = {
     {
       question: "Où faut-il placer les mentions légales sur son site ?",
       answer:
-        "La loi n'impose pas d'emplacement précis, mais l'usage — et la tolérance de la CNIL — veut qu'elles soient accessibles depuis n'importe quelle page, généralement via un lien dans le pied de page (footer), sous un intitulé explicite comme « Mentions légales ».",
+        "La loi n'impose pas d'emplacement précis, mais l'usage veut qu'elles soient accessibles depuis n'importe quelle page, généralement via un lien dans le pied de page (footer), sous un intitulé explicite comme « Mentions légales ».",
     },
     {
       question: "Combien coûte la création de mentions légales conformes ?",
@@ -71,7 +71,7 @@ export default function Article() {
 
       <h2>Le contenu obligatoire des mentions légales</h2>
       <p>
-        La LCEN (article 6-III) fixe une liste précise d&apos;informations à faire figurer.
+        La LCEN (article 1-1, dans sa numérotation issue de la loi SREN du 21 mai 2024) fixe une liste précise d&apos;informations à faire figurer.
         Voici les six blocs que doit contenir votre document.
       </p>
 
@@ -82,7 +82,7 @@ export default function Article() {
         <li>Adresse du siège social ou de l&apos;établissement ;</li>
         <li>Numéro SIRET (ou RCS et ville d&apos;immatriculation pour une société) ;</li>
         <li>Numéro de TVA intracommunautaire, si vous y êtes assujetti ;</li>
-        <li>Adresse email et, dans certains cas, un numéro de téléphone.</li>
+        <li>Adresse email et un numéro de téléphone (exigé par la LCEN).</li>
       </ul>
 
       <h3>2. Directeur de la publication</h3>
@@ -127,8 +127,8 @@ export default function Article() {
       </p>
       <ul>
         <li>
-          <strong>Auto-entrepreneur :</strong>{" "}pas de capital social ni de RCS à mentionner,
-          mais le numéro SIRET reste obligatoire. Voir notre guide dédié{" "}
+          <strong>Auto-entrepreneur :</strong>{" "}pas de capital social à mentionner, mais le numéro SIRET
+          reste obligatoire, ainsi que le numéro RCS si l&apos;activité est commerciale. Voir notre guide dédié{" "}
           <Link href="/mentions-legales-auto-entrepreneur">
             mentions légales auto-entrepreneur
           </Link>
@@ -150,7 +150,7 @@ export default function Article() {
       <div className="callout">
         <p>
           <strong>Sanctions encourues.</strong>{" "}L&apos;absence ou l&apos;inexactitude des
-          mentions légales est punie par l&apos;article 6-VI-2 de la LCEN d&apos;un an
+          mentions légales est punie par l&apos;article 1-2 de la LCEN d&apos;un an
           d&apos;emprisonnement et de 75 000 € d&apos;amende pour une personne physique — jusqu&apos;à
           375 000 € pour une personne morale. En pratique, les contrôles ciblent surtout les
           sites signalés (concurrents, clients mécontents) plutôt qu&apos;un contrôle
@@ -166,7 +166,7 @@ export default function Article() {
         consultables sans inscription ni connexion préalable.
       </p>
 
-      <h2>Générer des mentions légales conformes en 3 minutes</h2>
+      <h2>Générer vos mentions légales en 3 minutes</h2>
       <p>
         Rédiger ce document à la main suppose de connaître précisément les textes applicables
         à votre situation — et une erreur (SIRET manquant, hébergeur mal identifié) suffit à

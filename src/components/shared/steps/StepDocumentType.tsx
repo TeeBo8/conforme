@@ -14,27 +14,22 @@ const OPTIONS: {
   value: DocumentType;
   label: string;
   description: string;
-  price: string;
   badge?: string;
 }[] = [
   {
     value: "mentions_legales",
     label: "Mentions légales",
-    description: "Obligatoires pour tout site web en France — conformes à la loi LCEN",
-    price: "19 €",
+    description: "Obligatoires pour tout site professionnel (loi LCEN)",
   },
   {
     value: "politique_confidentialite",
     label: "Politique de confidentialité",
-    description: "Conforme au RGPD — obligatoire dès que vous collectez des données",
-    price: "19 €",
+    description: "Exigée par le RGPD dès que vous collectez des données personnelles",
   },
   {
     value: "pack",
     label: "Pack complet",
     description: "Mentions légales + Politique de confidentialité — la solution tout-en-un",
-    price: "29 €",
-    badge: "Économisez 9 €",
   },
 ];
 
@@ -55,7 +50,7 @@ export function StepDocumentType({ initial, onNext }: Props) {
       <div>
         <h2 className="text-xl font-semibold">Quel document souhaitez-vous générer ?</h2>
         <p className="text-muted-foreground mt-1 text-sm">
-          Sélectionnez un document — vous pourrez l&apos;apercevoir avant de payer.
+          Sélectionnez un document — vous pourrez le vérifier avant de l&apos;utiliser.
         </p>
       </div>
 
@@ -86,7 +81,6 @@ export function StepDocumentType({ initial, onNext }: Props) {
                 </div>
                 <p className="text-sm text-muted-foreground mt-0.5">{opt.description}</p>
               </div>
-              <span className="font-semibold text-lg shrink-0">{opt.price}</span>
             </div>
           </button>
         ))}

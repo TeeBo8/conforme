@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
   title: "ConformeFR — Générateur de documents légaux",
   description:
-    "Générez en 3 minutes des mentions légales et une politique de confidentialité RGPD conformes au droit français.",
+    "Générez en 3 minutes des mentions légales et une politique de confidentialité RGPD, rédigées d'après la LCEN et le RGPD.",
   openGraph: {
     siteName: "ConformeFR",
     locale: "fr_FR",

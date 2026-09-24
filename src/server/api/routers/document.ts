@@ -50,17 +50,36 @@ const generateDocumentInput = z.object({
 async function callAI(prompt: string): Promise<string | undefined> {
   if (!process.env.ANTHROPIC_API_KEY) return undefined;
   try {
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    const client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      timeout: 15_000,
+      maxRetries: 1,
+    });
     const msg = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 256,
       messages: [{ role: "user", content: prompt }],
     });
     const block = msg.content[0];
-    return block?.type === "text" ? block.text.trim() : undefined;
-  } catch {
+    return block?.type === "text" ? toPlainText(block.text) : undefined;
+  } catch (err) {
+    // Le document reste généré sans la zone IA, mais l'échec doit être visible dans les logs
+    console.error("[generateDocument] appel IA échoué :", err);
     return undefined;
   }
+}
+
+/** Le texte IA est inséré comme un paragraphe : on retire le markdown (titres, gras, puces). */
+function toPlainText(text: string): string | undefined {
+  const plain = text
+    .split("\n")
+    .filter((line) => !/^\s*#/.test(line))
+    .map((line) => line.replace(/^\s*[-•]\s+/, ""))
+    .join(" ")
+    .replace(/[*_`]+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return plain || undefined;
 }
 
 export const documentRouter = createTRPCRouter({
@@ -81,18 +100,15 @@ export const documentRouter = createTRPCRouter({
         siteType: input.siteType,
       };
 
-      const buildML = async () => {
-        const activiteDescription = await callAI(
-          `En 2-3 phrases maximum, décris l'activité d'un site de type "${input.siteType}" exploité par "${input.nomEntreprise}" (${input.formeJuridique}) à l'adresse ${input.urlSite}, en langage clair et professionnel pour des mentions légales. Ne fournis QUE la description, sans introduction ni conclusion.`
-        );
-        return buildMentionsLegales({
+      // Pas de description d'activité générée : l'IA n'a que le nom de l'entreprise
+      // et inventait l'activité. Elle reviendra à partir du contenu réel du site.
+      const buildML = async () =>
+        buildMentionsLegales({
           ...baseVars,
           directeurPublication: input.directeurPublication ?? input.nomEntreprise,
           capitalSocial: input.capitalSocial,
           rcsVille: input.rcsVille,
-          activiteDescription,
         });
-      };
 
       const buildPC = async () => {
         const donneesCollectees = (input.donneesCollectees ?? []) as DonneeCollectee[];

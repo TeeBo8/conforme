@@ -59,7 +59,7 @@ export function StepSiteType({ initial, onNext, onBack }: Props) {
       <div>
         <h2 className="text-xl font-semibold">Quel type de site web possédez-vous ?</h2>
         <p className="text-muted-foreground mt-1 text-sm">
-          Le type de site détermine les clauses spécifiques à inclure.
+          Choisissez la catégorie la plus proche de votre site.
         </p>
       </div>
 

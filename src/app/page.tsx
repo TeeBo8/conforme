@@ -33,7 +33,7 @@ const faq = [
   {
     question: "Que contient le document généré ?",
     answer:
-      "Des mentions légales conformes à la loi LCEN ou une politique de confidentialité conforme au RGPD, générées à partir de vos informations (entreprise, hébergeur, données collectées…). Vous obtenez un aperçu gratuit immédiat, puis le document final en PDF et en HTML prêt à intégrer sur votre site.",
+      "Des mentions légales rédigées d'après la loi LCEN ou une politique de confidentialité rédigée d'après le RGPD, générées à partir de vos informations (entreprise, hébergeur, données collectées…). Vous obtenez un aperçu gratuit immédiat, puis le document final en PDF et en HTML prêt à intégrer sur votre site.",
   },
   {
     question: "Combien ça coûte ?",
@@ -41,9 +41,9 @@ const faq = [
       "L'aperçu est 100 % gratuit. Le téléchargement du document final coûte 19 € (mentions légales ou politique de confidentialité) ou 29 € pour le pack complet avec les deux documents. Paiement unique, accès à vie, re-téléchargeable à tout moment.",
   },
   {
-    question: "Est-ce vraiment conforme au droit français ?",
+    question: "Les documents sont-ils conformes au droit français ?",
     answer:
-      "Les documents sont construits sur les exigences de la loi LCEN et du RGPD (CNIL). Ils couvrent les cas standards des sites vitrines, blogs, e-commerces et SaaS. Pour une situation complexe ou réglementée, ils restent un excellent point de départ à faire valider par un professionnel du droit.",
+      "Les documents reprennent les informations exigées par la loi LCEN et le RGPD pour les cas courants (sites vitrines, blogs, e-commerces, SaaS). Ils ne constituent pas un conseil juridique : pour une situation complexe ou une activité réglementée, faites-les relire par un professionnel du droit.",
   },
   {
     question: "Puis-je modifier le document après l'achat ?",
@@ -75,7 +75,7 @@ export default function Home() {
         <section className="flex flex-col items-center justify-center text-center py-24">
           <div className="max-w-2xl space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
-              ✓ Conforme RGPD & loi LCEN — droit français
+              Loi LCEN & RGPD — droit français
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">

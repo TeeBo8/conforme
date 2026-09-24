@@ -37,7 +37,7 @@ export default function GenerateurClient({ initialData }: Props) {
           <Spinner size="lg" className="mx-auto" />
           <p className="font-medium">Génération de votre document…</p>
           <p className="text-xs text-muted-foreground">
-            L&apos;IA rédige vos clauses personnalisées — comptez 15 à 30 secondes.
+            Assemblage de votre document — quelques secondes.
           </p>
         </div>
         <div className="rounded-xl border border-foreground/10 bg-foreground/5 p-8 space-y-5 animate-pulse">

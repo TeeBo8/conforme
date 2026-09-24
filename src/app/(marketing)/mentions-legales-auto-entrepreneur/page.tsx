@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Mentions légales auto-entrepreneur — Générateur gratuit | ConformeFR",
   description:
-    "Générez vos mentions légales auto-entrepreneur en 3 minutes. Conformes à la loi LCEN, adaptées aux micro-entrepreneurs. Aperçu gratuit, PDF 19 €.",
+    "Générez vos mentions légales auto-entrepreneur en 3 minutes. Rédigées d'après la loi LCEN pour les micro-entrepreneurs. Aperçu gratuit, PDF 19 €.",
   alternates: { canonical: "/mentions-legales-auto-entrepreneur" },
 };
 
@@ -18,12 +18,12 @@ const faq = [
   {
     question: "Quelles informations obligatoires doit contenir les mentions légales d'un auto-entrepreneur ?",
     answer:
-      "Vos mentions légales doivent inclure : votre nom et prénom (ou dénomination), votre adresse professionnelle, votre numéro SIRET, votre adresse email, le nom et l'adresse de votre hébergeur. Si vous exercez une activité réglementée, vous devez également mentionner l'autorité compétente.",
+      "Vos mentions légales doivent inclure : votre nom et prénom (ou dénomination), votre adresse, votre numéro de téléphone, votre numéro SIRET, votre adresse email, le nom et l'adresse de votre hébergeur. Si vous exercez une activité réglementée, vous devez également mentionner l'autorité compétente.",
   },
   {
     question: "Faut-il indiquer son adresse personnelle dans les mentions légales en tant qu'auto-entrepreneur ?",
     answer:
-      "Si votre adresse professionnelle est votre domicile, vous pouvez utiliser une adresse de domiciliation commerciale pour protéger votre vie privée. L'essentiel est que l'adresse indiquée soit joignable et permettre à un tiers de vous contacter.",
+      "Si votre adresse professionnelle est votre domicile, vous pouvez utiliser une adresse de domiciliation commerciale pour protéger votre vie privée. L'essentiel est que l'adresse indiquée soit joignable et permette à un tiers de vous contacter.",
   },
   {
     question: "Mon auto-entreprise n'a pas de numéro de TVA, que dois-je indiquer ?",
@@ -59,14 +59,14 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
         {/* Hero */}
         <section className="text-center space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-3 py-1 text-xs text-muted-foreground">
-            ✓ Conforme LCEN — mis à jour 2025
+            Loi LCEN — droit français
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
             Mentions légales<br />
             <span className="text-muted-foreground">auto-entrepreneur</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-            Générez des mentions légales conformes à la loi LCEN, adaptées au statut
+            Générez des mentions légales rédigées d&apos;après la loi LCEN, pour le statut
             micro-entrepreneur. Aperçu immédiat et gratuit.
           </p>
           <Button asChild size="lg" className="text-base px-8">
@@ -88,8 +88,9 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
             boutique en ligne.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            En l&apos;absence de mentions légales, vous vous exposez à une amende administrative
-            pouvant atteindre <strong className="text-foreground">75 000 €</strong> pour une personne physique.
+            En l&apos;absence de mentions légales, vous vous exposez à une sanction pénale pouvant
+            atteindre <strong className="text-foreground">un an d&apos;emprisonnement et 75 000 € d&apos;amende</strong>{" "}
+            pour une personne physique (article 1-2 de la LCEN).
             Au-delà de la conformité légale, elles renforcent la confiance de vos visiteurs.
           </p>
         </section>
@@ -102,7 +103,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
               "Identification complète de l'éditeur (nom, SIRET, adresse, email)",
               "Coordonnées de l'hébergeur du site",
               "Informations sur la propriété intellectuelle du contenu",
-              "Limitation de responsabilité conforme au droit français",
+              "Clause de limitation de responsabilité",
               "Clause de droit applicable et juridiction compétente",
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">

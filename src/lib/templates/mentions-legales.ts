@@ -1,4 +1,5 @@
 import type { MentionsLegalesVars } from "./types";
+import { escapeHtml, escapeVars, safeHttpUrl } from "./escape";
 
 function today(): string {
   return new Date().toLocaleDateString("fr-FR", {
@@ -19,12 +20,12 @@ export function buildMentionsLegales(vars: MentionsLegalesVars): string {
     urlSite,
     nomHebergeur,
     adresseHebergeur,
-    urlHebergeur,
     directeurPublication,
     capitalSocial,
     rcsVille,
     activiteDescription,
-  } = vars;
+  } = escapeVars(vars);
+  const hrefHebergeur = safeHttpUrl(vars.urlHebergeur);
 
   let n = 0;
   const s = () => String(++n);
@@ -55,7 +56,7 @@ export function buildMentionsLegales(vars: MentionsLegalesVars): string {
 <ul>
   <li><strong>Raison sociale :</strong> ${nomHebergeur}</li>
   <li><strong>Adresse :</strong> ${adresseHebergeur}</li>
-  ${urlHebergeur ? `<li><strong>Site web :</strong> <a href="${urlHebergeur}" target="_blank" rel="noopener noreferrer">${urlHebergeur}</a></li>` : ""}
+  ${hrefHebergeur ? `<li><strong>Site web :</strong> <a href="${escapeHtml(hrefHebergeur)}" target="_blank" rel="noopener noreferrer">${escapeHtml(hrefHebergeur)}</a></li>` : ""}
 </ul>
 </section>`);
 

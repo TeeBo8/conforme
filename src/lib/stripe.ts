@@ -10,6 +10,10 @@ export function getStripe(): Stripe {
   return _stripe;
 }
 
+// Paiement coupé : ConformeFR n'a pas de structure juridique pour vendre.
+// À réactiver seulement avec un SIRET, des CGV et un médiateur de la consommation.
+export const PAYMENTS_ENABLED = false;
+
 export const PRICES = {
   mentions_legales: 1900,
   politique_confidentialite: 1900,
