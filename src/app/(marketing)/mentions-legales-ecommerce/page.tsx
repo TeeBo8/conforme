@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Mentions légales e-commerce — Obligations légales boutique en ligne | ConformeFR",
   description:
-    "Générez les mentions légales de votre boutique en ligne. Rédigées d'après la loi LCEN. Aperçu gratuit, PDF 19 €.",
+    "Générez les mentions légales de votre boutique en ligne. Rédigées d'après la loi LCEN. Gratuit, PDF et HTML.",
   alternates: { canonical: "/mentions-legales-ecommerce" },
 };
 
@@ -74,7 +74,7 @@ export default function MentionsLegalesEcommercePage() {
               Générer mes mentions légales gratuitement →
             </Link>
           </Button>
-          <p className="text-xs text-muted-foreground">Aperçu gratuit · PDF 19 € · Sans abonnement</p>
+          <p className="text-xs text-muted-foreground">Gratuit · PDF et HTML · Sans inscription</p>
         </section>
 
         {/* Contenu */}
@@ -137,17 +137,17 @@ export default function MentionsLegalesEcommercePage() {
         <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Sécurisez votre boutique en ligne</h2>
           <p className="text-muted-foreground">
-            Générez vos mentions légales e-commerce en 3 minutes. Aperçu gratuit.
+            Générez vos mentions légales e-commerce en 3 minutes. Gratuit, sans inscription.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="text-base px-8">
               <Link href="/generateur?type=mentions_legales&siteType=ecommerce">
-                Mentions légales — 19 € →
+                Mentions légales →
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-base px-8">
               <Link href="/generateur?type=pack&siteType=ecommerce">
-                Pack complet — 29 € →
+                Pack complet →
               </Link>
             </Button>
           </div>

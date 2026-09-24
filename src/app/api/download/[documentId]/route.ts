@@ -1,11 +1,9 @@
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { renderToBuffer } from "@react-pdf/renderer";
 import type { DocumentProps } from "@react-pdf/renderer";
 import React from "react";
-import { auth } from "@/lib/auth";
 import { db } from "@/server/db";
 import { documents } from "@/server/db/schema";
 import { DocumentPDF } from "@/lib/pdf/DocumentPDF";
@@ -40,14 +38,11 @@ function htmlDocument(title: string, content: string): string {
     li { margin-bottom: 0.2rem; }
     a { color: inherit; }
     hr.document-separator { border: none; border-top: 2px solid #ddd; margin: 3rem 0; }
-    .footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid #eee; font-size: 0.75rem; color: #999; }
     @media print { body { padding: 0; } }
   </style>
 </head>
 <body>
-  <h1>${title}</h1>
   ${content}
-  <div class="footer">Document généré par <a href="https://conformefr.com">ConformeFR</a> — générateur de documents légaux pour sites web français</div>
 </body>
 </html>`;
 }
@@ -56,27 +51,15 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ documentId: string }> }
 ) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session?.user) {
-    const target = `${req.nextUrl.pathname}${req.nextUrl.search}`;
-    return NextResponse.redirect(
-      new URL(`/connexion?redirect=${encodeURIComponent(target)}`, req.nextUrl)
-    );
-  }
-
+  // ConformeFR est gratuit : le document se télécharge avec son identifiant
+  // (UUID aléatoire, non devinable), sans compte ni paiement — comme l'aperçu.
   const { documentId } = await params;
   const format = req.nextUrl.searchParams.get("format") ?? "pdf";
 
   const [doc] = await db
     .select()
     .from(documents)
-    .where(
-      and(
-        eq(documents.id, documentId),
-        eq(documents.userId, session.user.id),
-        eq(documents.status, "paid")
-      )
-    )
+    .where(eq(documents.id, documentId))
     .limit(1);
 
   if (!doc) {

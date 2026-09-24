@@ -33,12 +33,12 @@ const faq = [
   {
     question: "Que contient le document généré ?",
     answer:
-      "Des mentions légales rédigées d'après la loi LCEN ou une politique de confidentialité rédigée d'après le RGPD, générées à partir de vos informations (entreprise, hébergeur, données collectées…). Vous obtenez un aperçu gratuit immédiat, puis le document final en PDF et en HTML prêt à intégrer sur votre site.",
+      "Des mentions légales rédigées d'après la loi LCEN ou une politique de confidentialité rédigée d'après le RGPD, générées à partir de vos informations (entreprise, hébergeur, données collectées…). Vous relisez le document à l'écran, puis vous le téléchargez en PDF et en HTML prêt à intégrer sur votre site.",
   },
   {
     question: "Combien ça coûte ?",
     answer:
-      "L'aperçu est 100 % gratuit. Le téléchargement du document final coûte 19 € (mentions légales ou politique de confidentialité) ou 29 € pour le pack complet avec les deux documents. Paiement unique, accès à vie, re-téléchargeable à tout moment.",
+      "Rien. ConformeFR est gratuit, sans inscription : vous générez et téléchargez vos documents (PDF et HTML) sans créer de compte.",
   },
   {
     question: "Les documents sont-ils conformes au droit français ?",
@@ -84,8 +84,8 @@ export default function Home() {
             </h1>
 
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Générateur de documents légaux pour sites web français. Aperçu gratuit,
-              téléchargement PDF et HTML à partir de 19&nbsp;€.
+              Générateur gratuit de documents légaux pour sites web français.
+              Téléchargement PDF et HTML, sans inscription.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
@@ -97,7 +97,7 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-muted-foreground">
               <span>📄 Mentions légales</span>
               <span>🔒 Politique RGPD</span>
-              <span>📦 Pack complet — 29&nbsp;€</span>
+              <span>📦 Pack complet</span>
             </div>
           </div>
         </section>

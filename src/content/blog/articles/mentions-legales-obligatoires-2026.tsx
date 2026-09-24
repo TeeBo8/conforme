@@ -33,7 +33,7 @@ export const meta: BlogArticleMeta = {
     {
       question: "Combien coûte la création de mentions légales conformes ?",
       answer:
-        "Avec ConformeFR, l'aperçu de vos mentions légales est entièrement gratuit et généré en 3 minutes à partir de vos informations. Le téléchargement du document final (PDF et HTML sans filigrane) coûte 19 €, sans abonnement.",
+        "Avec ConformeFR, c'est gratuit : vos mentions légales sont générées en 3 minutes à partir de vos informations et téléchargeables en PDF et en HTML, sans inscription.",
     },
   ],
 };
@@ -171,14 +171,14 @@ export default function Article() {
         Rédiger ce document à la main suppose de connaître précisément les textes applicables
         à votre situation — et une erreur (SIRET manquant, hébergeur mal identifié) suffit à
         rendre le document non conforme. ConformeFR génère un document personnalisé à partir de
-        vos informations d&apos;entreprise, avec un aperçu gratuit avant tout paiement.
+        vos informations d&apos;entreprise, gratuitement et sans inscription.
       </p>
 
       <div className="cta">
         <p className="cta-title">Prêt à mettre votre site en conformité ?</p>
         <p className="cta-text">
-          Générez vos mentions légales personnalisées en 3 minutes. Aperçu gratuit, vous ne
-          payez que si vous téléchargez.
+          Générez vos mentions légales personnalisées en 3 minutes. Gratuit, sans
+          inscription.
         </p>
         <Link href="/generateur?type=mentions_legales" className="cta-button">
           Générer mes mentions légales gratuitement →

@@ -58,7 +58,7 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
       <div>
         <h2 className="text-xl font-semibold">Récapitulatif</h2>
         <p className="text-muted-foreground mt-1 text-sm">
-          Vérifiez vos informations avant de générer l&apos;aperçu.
+          Vérifiez vos informations avant de générer le document.
         </p>
       </div>
 
@@ -147,7 +147,7 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
           className="min-w-40 gap-2"
         >
           {isGenerating && <Spinner size="sm" />}
-          {isGenerating ? "Génération…" : "Générer l'aperçu →"}
+          {isGenerating ? "Génération…" : "Générer mon document →"}
         </Button>
       </div>
     </div>

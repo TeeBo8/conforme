@@ -4,7 +4,7 @@ import GenerateurClient from "./GenerateurClient";
 
 export const metadata: Metadata = {
   title: "Générateur de documents légaux — ConformeFR",
-  description: "Créez vos mentions légales et politique de confidentialité RGPD en 3 minutes. Aperçu gratuit, téléchargement PDF et HTML à partir de 19 €.",
+  description: "Créez vos mentions légales et politique de confidentialité RGPD en 3 minutes. Gratuit, téléchargement PDF et HTML sans inscription.",
   alternates: { canonical: "/generateur" },
 };
 
@@ -28,7 +28,7 @@ export default async function GenerateurPage({ searchParams }: Props) {
       <div className="max-w-2xl mx-auto mb-10 text-center">
         <h1 className="text-3xl font-bold tracking-tight">Générer mon document légal</h1>
         <p className="text-muted-foreground mt-2">
-          Répondez aux questions ci-dessous — l&apos;aperçu est immédiat et gratuit.
+          Répondez aux questions ci-dessous — c&apos;est gratuit et sans inscription.
         </p>
       </div>
       <GenerateurClient initialData={Object.keys(initialData).length > 0 ? initialData : undefined} />

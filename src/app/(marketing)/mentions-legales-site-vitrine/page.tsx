@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Mentions légales site vitrine — Générateur basé sur la LCEN | ConformeFR",
   description:
-    "Créez les mentions légales de votre site vitrine en 3 minutes. Rédigées d'après la loi LCEN, pour les TPE et PME. Aperçu gratuit, PDF 19 €.",
+    "Créez les mentions légales de votre site vitrine en 3 minutes. Rédigées d'après la loi LCEN, pour les TPE et PME. Gratuit, PDF et HTML.",
   alternates: { canonical: "/mentions-legales-site-vitrine" },
 };
 
@@ -74,7 +74,7 @@ export default function MentionsLegalesSiteVitrineePage() {
               Générer mes mentions légales gratuitement →
             </Link>
           </Button>
-          <p className="text-xs text-muted-foreground">Aperçu gratuit · PDF 19 € · Sans abonnement</p>
+          <p className="text-xs text-muted-foreground">Gratuit · PDF et HTML · Sans inscription</p>
         </section>
 
         {/* Contenu */}
@@ -128,7 +128,7 @@ export default function MentionsLegalesSiteVitrineePage() {
         <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Votre site vitrine mérite d&apos;être en règle</h2>
           <p className="text-muted-foreground">
-            Générez vos mentions légales en 3 minutes. Aperçu gratuit, paiement uniquement si vous téléchargez.
+            Générez vos mentions légales en 3 minutes. Gratuit, sans inscription.
           </p>
           <Button asChild size="lg" className="text-base px-8">
             <Link href="/generateur?type=mentions_legales&siteType=vitrine">

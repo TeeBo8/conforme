@@ -5,16 +5,10 @@ interface Props {
 export function DocumentPreview({ html }: Props) {
   return (
     <div className="relative rounded-xl border border-border overflow-hidden">
-      {/* Filigrane diagonal répété — couleurs light/dark dans globals.css */}
-      <div
-        aria-hidden
-        className="preview-watermark absolute inset-0 pointer-events-none z-10"
-      />
-
-      {/* Contenu du document — select-none : l'aperçu gratuit ne se copie pas */}
+      {/* Contenu du document — HTML déjà échappé à la génération (templates) */}
       <div
         className="
-          relative z-0 p-8 md:p-12 bg-foreground/[0.03] select-none
+          relative z-0 p-8 md:p-12 bg-foreground/[0.03]
           [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mb-2
           [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-foreground/90 [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:pb-1.5 [&_h2]:border-b [&_h2]:border-foreground/10
           [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-foreground/65 [&_p]:mb-2

@@ -53,12 +53,6 @@ export function Navbar() {
           ) : (
             <>
               <Link
-                href="/connexion"
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Connexion
-              </Link>
-              <Link
                 href="/generateur"
                 className="sm:hidden inline-flex items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-accent"
               >

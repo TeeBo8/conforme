@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Politique de confidentialité RGPD petite entreprise — ConformeFR",
   description:
-    "Générez une politique de confidentialité RGPD adaptée à votre petite entreprise ou TPE. Aperçu gratuit, PDF 19 €.",
+    "Générez une politique de confidentialité RGPD adaptée à votre petite entreprise ou TPE. Gratuit, PDF et HTML.",
   alternates: { canonical: "/politique-confidentialite-rgpd-petite-entreprise" },
 };
 
@@ -23,7 +23,7 @@ const faq = [
   {
     question: "Quelle est la différence entre mentions légales et politique de confidentialité ?",
     answer:
-      "Les mentions légales (loi LCEN) identifient l'éditeur du site. La politique de confidentialité (RGPD) informe sur le traitement des données personnelles. Ces deux documents sont complémentaires et obligatoires pour la plupart des sites web professionnels. ConformeFR propose un pack à 29 € incluant les deux documents.",
+      "Les mentions légales (loi LCEN) identifient l'éditeur du site. La politique de confidentialité (RGPD) informe sur le traitement des données personnelles. Ces deux documents sont complémentaires et obligatoires pour la plupart des sites web professionnels. ConformeFR propose un pack gratuit incluant les deux documents.",
   },
   {
     question: "Ma petite entreprise n'utilise que Google Analytics, ai-je besoin d'une politique de confidentialité ?",
@@ -38,7 +38,7 @@ const faq = [
   {
     question: "Combien de temps faut-il pour générer ma politique de confidentialité avec ConformeFR ?",
     answer:
-      "Environ 3 minutes. Vous renseignez les informations de votre entreprise et les données que vous collectez (formulaire de contact, newsletter, analytics, paiement...), et ConformeFR génère un document personnalisé. L'aperçu est gratuit et immédiat. Le téléchargement PDF et HTML est disponible à 19 €.",
+      "Environ 3 minutes. Vous renseignez les informations de votre entreprise et les données que vous collectez (formulaire de contact, newsletter, analytics, paiement...), et ConformeFR génère un document personnalisé. C'est gratuit : le téléchargement PDF et HTML ne demande pas d'inscription.",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
               Générer ma politique de confidentialité →
             </Link>
           </Button>
-          <p className="text-xs text-muted-foreground">Aperçu gratuit · PDF 19 € · Sans abonnement</p>
+          <p className="text-xs text-muted-foreground">Gratuit · PDF et HTML · Sans inscription</p>
         </section>
 
         {/* Contenu */}
@@ -136,17 +136,17 @@ export default function PolitiqueConfidentialiteRgpdPage() {
         <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Rédigez votre politique de confidentialité dès aujourd&apos;hui</h2>
           <p className="text-muted-foreground">
-            Générez votre politique de confidentialité en 3 minutes. Aperçu gratuit.
+            Générez votre politique de confidentialité en 3 minutes. Gratuit, sans inscription.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="text-base px-8">
               <Link href="/generateur?type=politique_confidentialite">
-                Politique de conf. — 19 € →
+                Politique de confidentialité →
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-base px-8">
               <Link href="/generateur?type=pack">
-                Pack complet (mentions + RGPD) — 29 € →
+                Pack complet (mentions + RGPD) →
               </Link>
             </Button>
           </div>

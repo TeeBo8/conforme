@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Mentions légales auto-entrepreneur — Générateur gratuit | ConformeFR",
   description:
-    "Générez vos mentions légales auto-entrepreneur en 3 minutes. Rédigées d'après la loi LCEN pour les micro-entrepreneurs. Aperçu gratuit, PDF 19 €.",
+    "Générez vos mentions légales auto-entrepreneur en 3 minutes. Rédigées d'après la loi LCEN pour les micro-entrepreneurs. Gratuit, PDF et HTML.",
   alternates: { canonical: "/mentions-legales-auto-entrepreneur" },
 };
 
@@ -33,7 +33,7 @@ const faq = [
   {
     question: "Combien coûte la génération de mentions légales avec ConformeFR ?",
     answer:
-      "L'aperçu de vos mentions légales est 100 % gratuit. Vous ne payez que si vous souhaitez télécharger le document final sans filigrane (PDF + HTML prêt à intégrer), au tarif de 19 €.",
+      "Rien : ConformeFR est gratuit. Vous générez vos mentions légales et les téléchargez en PDF et en HTML prêt à intégrer, sans inscription.",
   },
 ];
 
@@ -74,7 +74,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
               Générer mes mentions légales gratuitement →
             </Link>
           </Button>
-          <p className="text-xs text-muted-foreground">Aperçu gratuit · PDF 19 € · Sans abonnement</p>
+          <p className="text-xs text-muted-foreground">Gratuit · PDF et HTML · Sans inscription</p>
         </section>
 
         {/* Pourquoi */}
@@ -131,7 +131,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
         <section className="text-center space-y-4 rounded-xl border border-foreground/10 bg-foreground/5 p-8">
           <h2 className="text-2xl font-bold">Prêt à vous mettre en conformité ?</h2>
           <p className="text-muted-foreground">
-            Générez vos mentions légales en 3 minutes. Aperçu gratuit, paiement uniquement si vous téléchargez.
+            Générez vos mentions légales en 3 minutes. Gratuit, sans inscription.
           </p>
           <Button asChild size="lg" className="text-base px-8">
             <Link href="/generateur?type=mentions_legales">
