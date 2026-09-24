@@ -100,7 +100,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
           <h2 className="text-xl font-bold">Ce que contient votre document</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {[
-              "Identification complète de l'éditeur (nom, SIRET, adresse, email)",
+              "Identification de l'éditeur (nom suivi de la mention « EI », SIRET, adresse, téléphone, email)",
               "Coordonnées de l'hébergeur du site",
               "Informations sur la propriété intellectuelle du contenu",
               "Clause de limitation de responsabilité",

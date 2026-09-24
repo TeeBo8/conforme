@@ -85,4 +85,51 @@ describe("buildPolitiqueConf", () => {
     const result = buildPolitiqueConf(BASE);
     expect(result).toContain('<a href="https://conformefr.com">ConformeFR</a>');
   });
+
+  it("cookies non essentiels : consentement préalable, pas de renvoi au seul navigateur", () => {
+    const result = buildPolitiqueConf({ ...BASE, cookiesUtilises: true, typesCookies: ["analytics", "publicitaires"] });
+    expect(result).toContain("qu'après avoir recueilli votre consentement");
+    expect(result).toContain("aussi simplement que les accepter");
+    expect(result).not.toContain("paramétrer votre navigateur pour refuser");
+  });
+
+  it("cookies fonctionnels seuls : pas de consentement exigé", () => {
+    const result = buildPolitiqueConf({ ...BASE, cookiesUtilises: true, typesCookies: ["fonctionnels"] });
+    expect(result).toContain("ne nécessitent pas votre consentement");
+  });
+
+  it("statistiques avec cookies analytics : base légale = consentement", () => {
+    const result = buildPolitiqueConf({ ...BASE, finalites: ["statistiques"], cookiesUtilises: true, typesCookies: ["analytics"] });
+    expect(result).toContain("Consentement (Art. 6.1.a RGPD)");
+    expect(result).not.toContain("Intérêt légitime (Art. 6.1.f RGPD)");
+  });
+
+  it("destinataires : l'hébergeur réel, pas de prestataire de paiement si le site ne vend pas", () => {
+    const result = buildPolitiqueConf({ ...BASE, finalites: ["support_client"] });
+    expect(result).toContain("Vercel Inc.");
+    expect(result).not.toContain("Prestataire de paiement");
+  });
+
+  it("destinataires : prestataire de paiement si le site vend", () => {
+    expect(buildPolitiqueConf({ ...BASE, finalites: ["gestion_commandes"] })).toContain("Prestataire de paiement");
+  });
+
+  it("mentionne la conservation comptable de 10 ans seulement si facturation", () => {
+    expect(buildPolitiqueConf(BASE)).toContain("L123-22");
+    expect(buildPolitiqueConf({ ...BASE, finalites: ["support_client"] })).not.toContain("L123-22");
+  });
+
+  it("affiche le DPO s'il est fourni", () => {
+    expect(buildPolitiqueConf({ ...BASE, dpoContact: "Marie Martin — dpo@testcorp.fr" })).toContain("Marie Martin");
+  });
+
+  it("mentionne les directives post-mortem (art. 85 loi Informatique et Libertés)", () => {
+    expect(buildPolitiqueConf(BASE)).toContain("Directives post-mortem");
+  });
+
+  it("ne promet ni HTTPS ni information par email", () => {
+    const result = buildPolitiqueConf(BASE);
+    expect(result).not.toContain("HTTPS");
+    expect(result).not.toContain("informé par email");
+  });
 });

@@ -70,10 +70,19 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
         </RecapSection>
 
         {/* Entreprise */}
-        <RecapSection title="Entreprise">
+        <RecapSection title="Éditeur">
           <RecapRow label="Nom" value={data.nomEntreprise} />
+          {data.nomCommercial && <RecapRow label="Nom commercial" value={data.nomCommercial} />}
           <RecapRow label="Forme juridique" value={data.formeJuridique} />
+          {data.capitalSocial && <RecapRow label="Capital social" value={`${data.capitalSocial} €`} />}
           {data.siret && <RecapRow label="SIRET" value={data.siret} />}
+          {data.registre && (
+            <RecapRow
+              label="Immatriculation"
+              value={data.registre === "rcs" ? `RCS ${data.rcsVille ?? ""}`.trim() : data.registre === "rne" ? "RNE" : "Aucune"}
+            />
+          )}
+          {data.tvaIntracom && <RecapRow label="TVA intracommunautaire" value={data.tvaIntracom} />}
           <RecapRow label="Adresse" value={data.adresse} />
           <RecapRow label="Email" value={data.email} />
           {data.telephone && <RecapRow label="Téléphone" value={data.telephone} />}
@@ -87,7 +96,15 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
         <RecapSection title="Hébergeur">
           <RecapRow label="Nom" value={data.nomHebergeur} />
           <RecapRow label="Adresse" value={data.adresseHebergeur} />
+          {data.telephoneHebergeur && <RecapRow label="Téléphone" value={data.telephoneHebergeur} />}
         </RecapSection>
+
+        {(data.mediateurNom || data.cgvUrl) && (
+          <RecapSection title="Vente en ligne">
+            {data.mediateurNom && <RecapRow label="Médiateur" value={data.mediateurNom} />}
+            {data.cgvUrl && <RecapRow label="CGV" value={data.cgvUrl} />}
+          </RecapSection>
+        )}
 
         {/* Données (si applicable) */}
         {hasDonnees && data.donneesCollectees && data.donneesCollectees.length > 0 && (
@@ -126,6 +143,7 @@ export function StepRecap({ data, isGenerating, onGenerate, onBack }: Props) {
               label="Transfert hors UE"
               value={data.transfertHorsUE ? `Oui${data.paysTransfert ? ` (${data.paysTransfert})` : ""}` : "Non"}
             />
+            {data.dpoContact && <RecapRow label="DPO" value={data.dpoContact} />}
           </RecapSection>
         )}
       </div>
@@ -175,7 +193,7 @@ function RecapRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4 text-sm">
       <span className="text-muted-foreground shrink-0">{label}</span>
-      <span className="text-right">{value}</span>
+      <span className="text-right break-words min-w-0">{value}</span>
     </div>
   );
 }

@@ -38,6 +38,14 @@ const generateDocumentInput = z.object({
   nomHebergeur: z.string().min(1),
   adresseHebergeur: z.string().min(1),
   urlHebergeur: z.string().optional(),
+  telephoneHebergeur: z.string().optional(),
+  nomCommercial: z.string().optional(),
+  registre: z.enum(["rcs", "rne", "aucun"]).optional(),
+  tvaIntracom: z.string().optional(),
+  mediateurNom: z.string().optional(),
+  mediateurUrl: z.string().optional(),
+  cgvUrl: z.string().optional(),
+  dpoContact: z.string().optional(),
   donneesCollectees: z.array(z.enum(DONNEES_VALUES)).optional(),
   finalites: z.array(z.enum(FINALITES_VALUES)).optional(),
   cookiesUtilises: z.boolean().optional(),
@@ -97,6 +105,7 @@ export const documentRouter = createTRPCRouter({
         nomHebergeur: input.nomHebergeur,
         adresseHebergeur: input.adresseHebergeur,
         urlHebergeur: input.urlHebergeur,
+        telephoneHebergeur: input.telephoneHebergeur,
         siteType: input.siteType,
       };
 
@@ -107,7 +116,13 @@ export const documentRouter = createTRPCRouter({
           ...baseVars,
           directeurPublication: input.directeurPublication ?? input.nomEntreprise,
           capitalSocial: input.capitalSocial,
+          registre: input.registre,
           rcsVille: input.rcsVille,
+          nomCommercial: input.nomCommercial,
+          tvaIntracom: input.tvaIntracom,
+          mediateurNom: input.mediateurNom,
+          mediateurUrl: input.mediateurUrl,
+          cgvUrl: input.cgvUrl,
         });
 
       const buildPC = async () => {
@@ -132,6 +147,7 @@ export const documentRouter = createTRPCRouter({
           dureeConservation: input.dureeConservation ?? "3 ans",
           transfertHorsUE: input.transfertHorsUE ?? false,
           paysTransfert: input.paysTransfert ? [input.paysTransfert] : undefined,
+          dpoContact: input.dpoContact,
         });
       };
 

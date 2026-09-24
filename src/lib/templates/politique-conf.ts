@@ -101,7 +101,15 @@ export function buildPolitiqueConf(vars: PolitiqueConfVars): string {
     dureeConservation,
     transfertHorsUE,
     paysTransfert,
+    nomHebergeur,
+    dpoContact,
   } = escapeVars(vars);
+
+  // Cookies soumis au consentement préalable (art. 82 loi Informatique et Libertés,
+  // lignes directrices CNIL du 17/09/2020) : tout sauf les cookies strictement nécessaires
+  const cookiesSoumisConsentement =
+    cookiesUtilises && (typesCookies ?? []).some((c) => c !== "fonctionnels");
+  const analyticsAvecCookies = cookiesUtilises && (typesCookies ?? []).includes("analytics");
 
   let n = 0;
   const s = () => String(++n);
@@ -118,6 +126,7 @@ export function buildPolitiqueConf(vars: PolitiqueConfVars): string {
   <li><strong>Email :</strong> <a href="mailto:${email}">${email}</a></li>
   ${telephone ? `<li><strong>Téléphone :</strong> ${telephone}</li>` : ""}
 </ul>
+${dpoContact ? `<p><strong>Délégué à la protection des données (DPO) :</strong> ${dpoContact}</p>` : ""}
 </section>`);
 
   // 2. Données collectées
@@ -128,6 +137,7 @@ export function buildPolitiqueConf(vars: PolitiqueConfVars): string {
   ${donneesCollectees.map((d) => `<li>${DONNEES_LABELS[d]}</li>`).join("\n  ")}
 </ul>
 <p>Ces données sont collectées directement auprès de vous, lors de votre navigation sur le site, ou lors de vos interactions avec nos services.</p>
+<p>Les champs signalés comme obligatoires dans nos formulaires sont nécessaires au traitement de votre demande : sans eux, elle ne pourra pas aboutir.</p>
 </section>`);
 
   // 3. Finalités — avec zone IA si disponible
@@ -136,7 +146,7 @@ export function buildPolitiqueConf(vars: PolitiqueConfVars): string {
       (f) =>
         `<tr>
   <td>${FINALITES_DATA[f].label}</td>
-  <td>${FINALITES_DATA[f].base}</td>
+  <td>${f === "statistiques" && analyticsAvecCookies ? "Consentement (Art. 6.1.a RGPD)" : FINALITES_DATA[f].base}</td>
   <td>${FINALITES_DATA[f].description}</td>
 </tr>`
     )
@@ -167,19 +177,35 @@ ${
   sections.push(`<section>
 <h2>${s()}. Durée de conservation</h2>
 <p>Vos données personnelles sont conservées pour la durée strictement nécessaire aux finalités pour lesquelles elles ont été collectées, et au maximum pendant <strong>${dureeConservation}</strong> à compter de la dernière interaction.</p>
-<p>Au-delà de ce délai, les données sont supprimées ou anonymisées, sauf obligation légale contraire (ex. données de facturation conservées 10 ans conformément au Code de commerce).</p>
+<p>Au-delà de ce délai, les données sont supprimées ou anonymisées, sauf obligation légale contraire${finalites.includes("facturation") ? " (par exemple, les pièces comptables et factures sont conservées 10 ans, conformément à l'article L123-22 du Code de commerce)" : ""}.</p>
 </section>`);
 
-  // 5. Destinataires
+  // 5. Destinataires — uniquement les prestataires cohérents avec les finalités choisies
+  const vend =
+    finalites.includes("gestion_commandes") ||
+    finalites.includes("facturation") ||
+    donneesCollectees.includes("donnees_paiement");
+  const destinataires = [
+    `<li><strong>Hébergeur du site :</strong> ${nomHebergeur}, pour le stockage et la mise à disposition du site.</li>`,
+    finalites.includes("envoi_newsletter") || finalites.includes("support_client")
+      ? `<li><strong>Prestataire d'envoi d'emails :</strong> pour l'envoi de nos messages et réponses.</li>`
+      : "",
+    finalites.includes("statistiques")
+      ? `<li><strong>Outil de mesure d'audience :</strong> pour produire nos statistiques de fréquentation.</li>`
+      : "",
+    vend
+      ? `<li><strong>Prestataire de paiement :</strong> vos données bancaires sont traitées directement par notre prestataire de paiement et ne sont pas conservées par nos soins.</li>`
+      : "",
+    `<li><strong>Autorités :</strong> en cas de réquisition judiciaire ou d'obligation légale.</li>`,
+  ].filter(Boolean);
+
   sections.push(`<section>
 <h2>${s()}. Destinataires des données</h2>
-<p>Vos données personnelles sont destinées à <strong>${nomEntreprise}</strong> et ne sont transmises à des tiers que dans les cas suivants :</p>
+<p>Vos données personnelles sont destinées à <strong>${nomEntreprise}</strong>. Elles ne sont transmises qu'aux destinataires suivants, dans la limite de ce qui est nécessaire à leur mission :</p>
 <ul>
-  <li><strong>Prestataires techniques :</strong> hébergeur du site, solution d'envoi d'emails, outil d'analyse d'audience — uniquement dans le cadre de l'exécution de leurs missions.</li>
-  <li><strong>Prestataire de paiement :</strong> vos données de paiement sont traitées directement par notre prestataire sécurisé et ne sont jamais stockées sur nos serveurs.</li>
-  <li><strong>Obligations légales :</strong> en cas de réquisition judiciaire ou obligation légale.</li>
+  ${destinataires.join("\n  ")}
 </ul>
-<p>Nous ne vendons, ne louons et ne cédons jamais vos données personnelles à des tiers à des fins commerciales.</p>
+<p>Nous ne vendons ni ne louons vos données personnelles.</p>
 </section>`);
 
   // 6. Transferts hors UE (conditionnel)
@@ -211,6 +237,7 @@ ${
   <li><strong>Droit à la portabilité</strong> — recevoir vos données dans un format structuré et lisible par machine.</li>
   <li><strong>Droit d'opposition</strong> — vous opposer au traitement de vos données dans les cas prévus par le RGPD.</li>
   <li><strong>Droit de retrait du consentement</strong> — retirer votre consentement à tout moment lorsque le traitement est fondé sur celui-ci.</li>
+  <li><strong>Directives post-mortem</strong> — définir des directives relatives à la conservation, à l'effacement et à la communication de vos données après votre décès (article 85 de la loi Informatique et Libertés).</li>
 </ul>
 <p>Pour exercer ces droits, contactez-nous :</p>
 <ul>
@@ -233,23 +260,28 @@ ${
 
     sections.push(`<section>
 <h2>${s()}. Cookies et traceurs</h2>
-<p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette, smartphone) lors de votre visite sur notre site. Nous utilisons des cookies pour améliorer votre expérience de navigation et analyser l'audience du site.</p>
+<p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette, smartphone) lors de votre visite sur notre site.</p>
 ${cookiesList}
-<p>Vous pouvez à tout moment paramétrer votre navigateur pour refuser les cookies ou être alerté de leur dépôt. Toutefois, certaines fonctionnalités du site pourraient ne plus être disponibles.</p>
-<p>La durée de conservation des cookies déposés sur votre terminal n'excède pas 13 mois, conformément aux recommandations de la CNIL.</p>
+${
+  cookiesSoumisConsentement
+    ? `<p>Les cookies qui ne sont pas strictement nécessaires au fonctionnement du site ne sont déposés qu'après avoir recueilli votre consentement, via le bandeau affiché lors de votre première visite. Vous pouvez les refuser aussi simplement que les accepter, et retirer votre consentement à tout moment depuis le module de gestion des cookies du site.</p>`
+    : `<p>Les cookies utilisés sont strictement nécessaires au fonctionnement du site ou à la mémorisation de vos préférences : ils ne nécessitent pas votre consentement préalable.</p>`
+}
+<p>Vous pouvez également configurer votre navigateur pour être alerté du dépôt de cookies ou les supprimer.</p>
+<p>La durée de vie des cookies déposés sur votre terminal n'excède pas 13 mois, conformément aux recommandations de la CNIL.</p>
 </section>`);
   }
 
   // Sécurité
   sections.push(`<section>
 <h2>${s()}. Sécurité des données</h2>
-<p><strong>${nomEntreprise}</strong> met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la perte, la destruction, l'altération ou l'accès non autorisé. Toutes les données transitent via des connexions sécurisées (HTTPS/TLS).</p>
+<p><strong>${nomEntreprise}</strong> met en œuvre les mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre la perte, la destruction, l'altération ou l'accès non autorisé.</p>
 </section>`);
 
   // Modifications
   sections.push(`<section>
 <h2>${s()}. Modifications de la présente politique</h2>
-<p><strong>${nomEntreprise}</strong> se réserve le droit de modifier la présente politique de confidentialité à tout moment, notamment pour se conformer à toute évolution légale, réglementaire ou technique. La date de mise à jour est indiquée en tête du document. En cas de modification substantielle, vous en serez informé par email ou via une notification sur le site.</p>
+<p><strong>${nomEntreprise}</strong> se réserve le droit de modifier la présente politique de confidentialité à tout moment, notamment pour se conformer à toute évolution légale, réglementaire ou technique. La date de mise à jour est indiquée en tête du document. En cas de modification substantielle, une information sera affichée sur le site.</p>
 </section>`);
 
   // Contact
@@ -267,13 +299,13 @@ ${cookiesList}
 <header>
   <h1>Politique de confidentialité</h1>
   <p class="document-date"><em>Dernière mise à jour : ${today()}</em></p>
-  <p class="document-intro">La protection de vos données personnelles est une priorité pour <strong>${nomEntreprise}</strong>. La présente politique de confidentialité vous informe de la manière dont nous collectons, utilisons et protégeons vos données personnelles, conformément au Règlement Général sur la Protection des Données (RGPD – Règlement UE 2016/679) et à la loi Informatique et Libertés.</p>
+  <p class="document-intro">La présente politique de confidentialité vous informe de la manière dont nous collectons, utilisons et protégeons vos données personnelles, conformément au Règlement Général sur la Protection des Données (RGPD – Règlement UE 2016/679) et à la loi Informatique et Libertés.</p>
 </header>
 
 ${sections.join("\n\n")}
 
 <footer class="document-disclaimer">
-  <p><em>Document généré par <strong><a href="https://conformefr.com">ConformeFR</a></strong> — générateur de documents légaux pour sites web français. Ce document a valeur informative et ne constitue pas un conseil juridique personnalisé. Pour toute situation complexe, consultez un professionnel du droit.</em></p>
+  <p><em>Document généré par <strong><a href="https://conformefr.com">ConformeFR</a></strong> — générateur gratuit de documents légaux pour sites web français. Ce document a valeur informative et ne constitue pas un conseil juridique personnalisé. Pour toute situation complexe, consultez un professionnel du droit.</em></p>
 </footer>
 </article>`;
 }

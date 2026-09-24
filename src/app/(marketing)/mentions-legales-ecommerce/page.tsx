@@ -99,6 +99,7 @@ export default function MentionsLegalesEcommercePage() {
             {[
               "Identification du vendeur (dénomination, forme juridique, SIRET, RCS)",
               "Coordonnées de contact",
+              "Médiateur de la consommation et lien vers vos CGV",
               "Informations sur l'hébergement technique du site",
               "Clause de propriété intellectuelle",
             ].map((item) => (

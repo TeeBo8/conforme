@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { hebergeurHorsUE } from "@/lib/templates/entites";
 import type { DocumentFormData } from "@/lib/validations/document";
 import type { DonneeCollectee, Finalite, TypeCookie, SiteType } from "@/lib/templates/types";
 
@@ -74,6 +75,9 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
     initial?.transfertHorsUE ?? false
   );
   const [paysTransfert, setPays] = useState(initial?.paysTransfert ?? "");
+  const [dpoContact, setDpo] = useState(initial?.dpoContact ?? "");
+  const hebergeurEtranger = hebergeurHorsUE(initial?.nomHebergeur);
+  const cookiesAvecConsentement = cookiesUtilises && typesCookies.some((c) => c !== "fonctionnels");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const effectiveDuree = dureeConservation === "autre" ? dureeCustom : dureeConservation;
@@ -102,6 +106,7 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
       dureeConservation: effectiveDuree,
       transfertHorsUE,
       paysTransfert: transfertHorsUE ? paysTransfert : undefined,
+      dpoContact: dpoContact.trim() || undefined,
     });
   }
 
@@ -228,6 +233,12 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
                 />
               ))}
             </div>
+            {cookiesAvecConsentement && (
+              <p className="text-xs text-muted-foreground">
+                Ces cookies exigent un consentement préalable : votre site doit afficher un
+                bandeau permettant de les refuser aussi facilement que de les accepter (CNIL).
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -254,6 +265,12 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
             onToggle={() => setTransfert(false)}
           />
         </div>
+        {hebergeurEtranger && !transfertHorsUE && (
+          <p className="text-xs text-amber-700 dark:text-amber-400">
+            Votre hébergeur ({initial?.nomHebergeur}) est établi hors de l&apos;Union européenne :
+            vos données y sont donc transférées. Répondez « Oui » et indiquez le pays.
+          </p>
+        )}
         {transfertHorsUE && (
           <Input
             value={paysTransfert}
@@ -262,6 +279,20 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
             className="max-w-xs"
           />
         )}
+      </div>
+
+      {/* DPO */}
+      <div className="space-y-2">
+        <Label className="text-sm font-medium">Délégué à la protection des données (DPO)</Label>
+        <p className="text-xs text-muted-foreground">
+          Seulement si vous en avez désigné un : nom et moyen de contact.
+        </p>
+        <Input
+          value={dpoContact}
+          onChange={(e) => setDpo(e.target.value)}
+          placeholder="Ex : Marie Martin — dpo@monsite.fr"
+          className="max-w-md"
+        />
       </div>
 
       <div className="flex justify-between">

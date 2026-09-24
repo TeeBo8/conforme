@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { DocumentType, SiteType, DonneeCollectee, Finalite, TypeCookie } from "@/lib/templates/types";
+import type { Registre } from "@/lib/templates/entites";
 
 const DONNEES_VALUES = [
   "email", "nom_prenom", "telephone", "adresse_postale",
@@ -65,6 +66,14 @@ export interface DocumentFormData {
   nomHebergeur: string;
   adresseHebergeur: string;
   urlHebergeur?: string;
+  telephoneHebergeur?: string;
+  nomCommercial?: string;
+  registre?: Registre;
+  tvaIntracom?: string;
+  mediateurNom?: string;
+  mediateurUrl?: string;
+  cgvUrl?: string;
+  dpoContact?: string;
   donneesCollectees?: DonneeCollectee[];
   finalites?: Finalite[];
   cookiesUtilises?: boolean;

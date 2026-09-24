@@ -13,6 +13,16 @@ import {
 } from "@/components/ui/select";
 import type { DocumentFormData } from "@/lib/validations/document";
 import type { DocumentType, SiteType } from "@/lib/templates/types";
+import {
+  FORMES_JURIDIQUES,
+  HEBERGEURS,
+  isEntrepreneurIndividuel,
+  isPersonnePhysique,
+  isSiretValide,
+  isSocieteAvecCapital,
+  normaliserSiret,
+  type Registre,
+} from "@/lib/templates/entites";
 
 interface Props {
   initial?: Partial<DocumentFormData>;
@@ -22,30 +32,10 @@ interface Props {
   onBack: () => void;
 }
 
-const FORMES_JURIDIQUES = [
-  "Auto-entrepreneur / Micro-entreprise",
-  "Entreprise individuelle (EI)",
-  "EURL",
-  "SARL",
-  "SAS",
-  "SASU",
-  "SA",
-  "Association (loi 1901)",
-  "Particulier",
-];
-
-const FORMES_AVEC_CAPITAL = ["EURL", "SARL", "SAS", "SASU", "SA"];
-
-const HEBERGEURS = [
-  { nom: "Vercel", adresse: "340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis", url: "https://vercel.com" },
-  { nom: "OVHcloud", adresse: "2 rue Kellermann, 59100 Roubaix, France", url: "https://www.ovhcloud.com" },
-  { nom: "o2switch", adresse: "222-224 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand, France", url: "https://www.o2switch.fr" },
-  { nom: "Netlify", adresse: "44 Montgomery Street, Suite 300, San Francisco, CA 94104, États-Unis", url: "https://www.netlify.com" },
-  { nom: "Ionos", adresse: "7 Place de la Gare, 57200 Sarreguemines, France", url: "https://www.ionos.fr" },
-  { nom: "Scaleway", adresse: "8 rue de la Ville l'Évêque, 75008 Paris, France", url: "https://www.scaleway.com" },
-  { nom: "Infomaniak", adresse: "Rue Eugène-Marziano 25, 1227 Genève, Suisse", url: "https://www.infomaniak.com" },
-  { nom: "Cloudflare", adresse: "101 Townsend St, San Francisco, CA 94107, États-Unis", url: "https://www.cloudflare.com" },
-  { nom: "AWS (Amazon)", adresse: "410 Terry Ave N, Seattle, WA 98109, États-Unis", url: "https://aws.amazon.com" },
+const REGISTRES: { value: Registre; label: string }[] = [
+  { value: "rcs", label: "RCS — activité commerciale ou société" },
+  { value: "rne", label: "RNE uniquement — artisan, profession libérale" },
+  { value: "aucun", label: "Aucune immatriculation" },
 ];
 
 type FieldErrors = Record<string, string>;
@@ -53,13 +43,18 @@ type FieldErrors = Record<string, string>;
 const needsMentionsLegales = (type: DocumentType) =>
   type === "mentions_legales" || type === "pack";
 
-export function StepEntreprise({ initial, documentType, onNext, onBack }: Props) {
+const isHttpUrl = (v: string) => /^https?:\/\/.+/.test(v);
+
+export function StepEntreprise({ initial, documentType, siteType, onNext, onBack }: Props) {
   const [fields, setFields] = useState({
     nomEntreprise: initial?.nomEntreprise ?? "",
+    nomCommercial: initial?.nomCommercial ?? "",
     formeJuridique: initial?.formeJuridique ?? "",
     capitalSocial: initial?.capitalSocial ?? "",
     siret: initial?.siret ?? "",
+    registre: (initial?.registre ?? "") as Registre | "",
     rcsVille: initial?.rcsVille ?? "",
+    tvaIntracom: initial?.tvaIntracom ?? "",
     adresse: initial?.adresse ?? "",
     email: initial?.email ?? "",
     telephone: initial?.telephone ?? "",
@@ -68,6 +63,10 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
     nomHebergeur: initial?.nomHebergeur ?? "",
     adresseHebergeur: initial?.adresseHebergeur ?? "",
     urlHebergeur: initial?.urlHebergeur ?? "",
+    telephoneHebergeur: initial?.telephoneHebergeur ?? "",
+    mediateurNom: initial?.mediateurNom ?? "",
+    mediateurUrl: initial?.mediateurUrl ?? "",
+    cgvUrl: initial?.cgvUrl ?? "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -76,29 +75,42 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
     setErrors((prev) => ({ ...prev, [key]: "" }));
   };
 
-  const showCapital = FORMES_AVEC_CAPITAL.some((f) =>
-    fields.formeJuridique.includes(f)
-  );
-  const showDirecteur = needsMentionsLegales(documentType);
+  const forme = fields.formeJuridique;
+  const physique = isPersonnePhysique(forme);
+  const particulier = forme === "Particulier";
+  const showCapital = isSocieteAvecCapital(forme);
+  const showML = needsMentionsLegales(documentType);
+  const showEcommerce = showML && siteType === "ecommerce";
+  // Art. 1-1, I LCEN : téléphone de l'éditeur (sauf particulier non professionnel, art. 1-1, II)
+  const telephoneRequis = showML && !particulier;
 
   function validate(): FieldErrors {
     const errs: FieldErrors = {};
     if (!fields.nomEntreprise) errs.nomEntreprise = "Requis";
-    if (!fields.formeJuridique) errs.formeJuridique = "Requis";
+    if (!forme) errs.formeJuridique = "Requis";
     if (!fields.adresse) errs.adresse = "Requis";
     if (!fields.email) {
       errs.email = "Requis";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
       errs.email = "Email invalide";
     }
+    if (telephoneRequis && !fields.telephone) {
+      errs.telephone = "Exigé par la loi pour les mentions légales (art. 1-1 LCEN)";
+    }
+    if (fields.siret && !isSiretValide(fields.siret)) {
+      errs.siret = "Un SIRET contient 14 chiffres";
+    }
     if (!fields.urlSite) {
       errs.urlSite = "Requis";
-    } else if (!/^https?:\/\/.+/.test(fields.urlSite)) {
+    } else if (!isHttpUrl(fields.urlSite)) {
       errs.urlSite = "Doit commencer par https:// (ex: https://monsite.fr)";
+    }
+    for (const key of ["urlHebergeur", "mediateurUrl", "cgvUrl"] as const) {
+      if (fields[key] && !isHttpUrl(fields[key])) errs[key] = "Doit commencer par https://";
     }
     if (!fields.nomHebergeur) errs.nomHebergeur = "Requis";
     if (!fields.adresseHebergeur) errs.adresseHebergeur = "Requis";
-    if (showDirecteur && !fields.directeurPublication) {
+    if (showML && !fields.directeurPublication) {
       errs.directeurPublication = "Requis pour les mentions légales";
     }
     return errs;
@@ -110,44 +122,48 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
       setErrors(errs);
       return;
     }
+    const opt = (v: string) => v.trim() || undefined;
     onNext({
-      nomEntreprise: fields.nomEntreprise,
-      formeJuridique: fields.formeJuridique,
-      capitalSocial: fields.capitalSocial || undefined,
-      siret: fields.siret || undefined,
-      rcsVille: fields.rcsVille || undefined,
-      adresse: fields.adresse,
-      email: fields.email,
-      telephone: fields.telephone || undefined,
-      urlSite: fields.urlSite,
-      directeurPublication: fields.directeurPublication || undefined,
-      nomHebergeur: fields.nomHebergeur,
-      adresseHebergeur: fields.adresseHebergeur,
-      urlHebergeur: fields.urlHebergeur || undefined,
+      nomEntreprise: fields.nomEntreprise.trim(),
+      nomCommercial: physique ? opt(fields.nomCommercial) : undefined,
+      formeJuridique: forme,
+      capitalSocial: showCapital ? opt(fields.capitalSocial) : undefined,
+      siret: fields.siret ? normaliserSiret(fields.siret) : undefined,
+      registre: particulier ? undefined : fields.registre || undefined,
+      rcsVille: fields.registre === "rcs" ? opt(fields.rcsVille) : undefined,
+      tvaIntracom: particulier ? undefined : opt(fields.tvaIntracom),
+      adresse: fields.adresse.trim(),
+      email: fields.email.trim(),
+      telephone: opt(fields.telephone),
+      urlSite: fields.urlSite.trim(),
+      directeurPublication: opt(fields.directeurPublication),
+      nomHebergeur: fields.nomHebergeur.trim(),
+      adresseHebergeur: fields.adresseHebergeur.trim(),
+      urlHebergeur: opt(fields.urlHebergeur),
+      telephoneHebergeur: opt(fields.telephoneHebergeur),
+      mediateurNom: showEcommerce ? opt(fields.mediateurNom) : undefined,
+      mediateurUrl: showEcommerce ? opt(fields.mediateurUrl) : undefined,
+      cgvUrl: showEcommerce ? opt(fields.cgvUrl) : undefined,
     });
   }
 
   function applyHebergeur(nom: string) {
     const h = HEBERGEURS.find((x) => x.nom === nom);
-    if (h) {
-      setFields((prev) => ({
-        ...prev,
-        nomHebergeur: h.nom,
-        adresseHebergeur: h.adresse,
-        urlHebergeur: h.url,
-      }));
-      setErrors((prev) => ({
-        ...prev,
-        nomHebergeur: "",
-        adresseHebergeur: "",
-      }));
-    }
+    if (!h) return;
+    setFields((prev) => ({
+      ...prev,
+      nomHebergeur: h.nom,
+      adresseHebergeur: h.adresse,
+      urlHebergeur: h.url,
+      telephoneHebergeur: h.telephone ?? "",
+    }));
+    setErrors((prev) => ({ ...prev, nomHebergeur: "", adresseHebergeur: "" }));
   }
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold">Informations sur votre entreprise</h2>
+        <h2 className="text-xl font-semibold">Informations sur l&apos;éditeur du site</h2>
         <p className="text-muted-foreground mt-1 text-sm">
           Ces informations seront intégrées directement dans votre document légal.
         </p>
@@ -159,20 +175,9 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Nom de l'entreprise *" error={errors.nomEntreprise}>
-            <Input
-              value={fields.nomEntreprise}
-              onChange={(e) => set("nomEntreprise", e.target.value)}
-              placeholder="Ex : Dupont Design"
-            />
-          </Field>
-
           <Field label="Forme juridique *" error={errors.formeJuridique}>
-            <Select
-              value={fields.formeJuridique}
-              onValueChange={(v) => set("formeJuridique", v)}
-            >
-              <SelectTrigger>
+            <Select value={forme} onValueChange={(v) => set("formeJuridique", v)}>
+              <SelectTrigger aria-label="Forme juridique">
                 <SelectValue placeholder="Choisir…" />
               </SelectTrigger>
               <SelectContent>
@@ -185,6 +190,32 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             </Select>
           </Field>
 
+          <Field
+            label={physique ? "Nom et prénom *" : "Dénomination sociale *"}
+            error={errors.nomEntreprise}
+            hint={
+              isEntrepreneurIndividuel(forme)
+                ? "La mention « EI » sera ajoutée automatiquement (art. R526-27 du Code de commerce)."
+                : undefined
+            }
+          >
+            <Input
+              value={fields.nomEntreprise}
+              onChange={(e) => set("nomEntreprise", e.target.value)}
+              placeholder={physique ? "Ex : Jean Dupont" : "Ex : Dupont Design SAS"}
+            />
+          </Field>
+
+          {physique && !particulier && (
+            <Field label="Nom commercial" error="">
+              <Input
+                value={fields.nomCommercial}
+                onChange={(e) => set("nomCommercial", e.target.value)}
+                placeholder="Ex : Dupont Design"
+              />
+            </Field>
+          )}
+
           {showCapital && (
             <Field label="Capital social (€)" error={errors.capitalSocial}>
               <Input
@@ -195,24 +226,61 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             </Field>
           )}
 
-          <Field label="SIRET" error={errors.siret}>
-            <Input
-              value={fields.siret}
-              onChange={(e) => set("siret", e.target.value)}
-              placeholder="Ex : 123 456 789 00012"
-            />
-          </Field>
+          {!particulier && (
+            <>
+              <Field label="SIRET" error={errors.siret}>
+                <Input
+                  value={fields.siret}
+                  onChange={(e) => set("siret", e.target.value)}
+                  placeholder="Ex : 123 456 789 00012"
+                  inputMode="numeric"
+                />
+              </Field>
 
-          <Field label="Ville d'immatriculation RCS" error={errors.rcsVille}>
-            <Input
-              value={fields.rcsVille}
-              onChange={(e) => set("rcsVille", e.target.value)}
-              placeholder="Ex : Paris"
-            />
-          </Field>
+              <Field label="Immatriculation" error="">
+                <Select
+                  value={fields.registre}
+                  onValueChange={(v) => set("registre", v)}
+                >
+                  <SelectTrigger aria-label="Immatriculation">
+                    <SelectValue placeholder="Choisir…" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {REGISTRES.map((r) => (
+                      <SelectItem key={r.value} value={r.value}>
+                        {r.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+
+              {fields.registre === "rcs" && (
+                <Field label="Ville du greffe (RCS)" error="">
+                  <Input
+                    value={fields.rcsVille}
+                    onChange={(e) => set("rcsVille", e.target.value)}
+                    placeholder="Ex : Bordeaux"
+                  />
+                </Field>
+              )}
+
+              <Field label="N° de TVA intracommunautaire" error="" hint="Seulement si vous êtes assujetti à la TVA.">
+                <Input
+                  value={fields.tvaIntracom}
+                  onChange={(e) => set("tvaIntracom", e.target.value)}
+                  placeholder="Ex : FR12345678901"
+                />
+              </Field>
+            </>
+          )}
         </div>
 
-        <Field label="Adresse du siège social *" error={errors.adresse}>
+        <Field
+          label={physique ? "Adresse *" : "Adresse du siège social *"}
+          error={errors.adresse}
+          hint={physique ? "Votre domicile, ou l'adresse de votre société de domiciliation." : undefined}
+        >
           <Input
             value={fields.adresse}
             onChange={(e) => set("adresse", e.target.value)}
@@ -230,8 +298,13 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             />
           </Field>
 
-          <Field label="Téléphone" error={errors.telephone}>
+          <Field
+            label={telephoneRequis ? "Téléphone *" : "Téléphone"}
+            error={errors.telephone}
+            hint={telephoneRequis ? "Un numéro professionnel suffit." : undefined}
+          >
             <Input
+              type="tel"
               value={fields.telephone}
               onChange={(e) => set("telephone", e.target.value)}
               placeholder="Ex : 01 23 45 67 89"
@@ -247,7 +320,7 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
           />
         </Field>
 
-        {showDirecteur && (
+        {showML && (
           <Field label="Directeur de la publication *" error={errors.directeurPublication}>
             <Input
               value={fields.directeurPublication}
@@ -258,6 +331,41 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
         )}
       </div>
 
+      {showEcommerce && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+            Vente en ligne
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            Si vous vendez à des particuliers, les coordonnées de votre médiateur de la
+            consommation doivent figurer sur votre site (art. L616-1 du Code de la consommation).
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Médiateur de la consommation" error="">
+              <Input
+                value={fields.mediateurNom}
+                onChange={(e) => set("mediateurNom", e.target.value)}
+                placeholder="Nom et adresse du médiateur"
+              />
+            </Field>
+            <Field label="Site du médiateur" error={errors.mediateurUrl}>
+              <Input
+                value={fields.mediateurUrl}
+                onChange={(e) => set("mediateurUrl", e.target.value)}
+                placeholder="https://…"
+              />
+            </Field>
+          </div>
+          <Field label="Adresse de vos CGV" error={errors.cgvUrl}>
+            <Input
+              value={fields.cgvUrl}
+              onChange={(e) => set("cgvUrl", e.target.value)}
+              placeholder="https://monsite.fr/cgv"
+            />
+          </Field>
+        </div>
+      )}
+
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
           Hébergeur
@@ -265,7 +373,7 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
 
         <Field label="Hébergeur connu" error="">
           <Select onValueChange={applyHebergeur}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Hébergeur connu">
               <SelectValue placeholder="Sélectionner un hébergeur connu (optionnel)…" />
             </SelectTrigger>
             <SelectContent>
@@ -283,7 +391,7 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             <Input
               value={fields.nomHebergeur}
               onChange={(e) => set("nomHebergeur", e.target.value)}
-              placeholder="Ex : OVHcloud"
+              placeholder="Ex : OVH SAS"
             />
           </Field>
 
@@ -303,6 +411,21 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
             placeholder="Ex : 2 rue Kellermann, 59100 Roubaix, France"
           />
         </Field>
+
+        {showML && (
+          <Field
+            label="Téléphone de l'hébergeur"
+            error=""
+            hint="Exigé par la loi (art. 1-1 LCEN) : reprenez celui publié par votre hébergeur, sur ses propres mentions légales."
+          >
+            <Input
+              type="tel"
+              value={fields.telephoneHebergeur}
+              onChange={(e) => set("telephoneHebergeur", e.target.value)}
+              placeholder="Ex : 0970 808 911"
+            />
+          </Field>
+        )}
       </div>
 
       <div className="flex justify-between">
@@ -318,16 +441,19 @@ export function StepEntreprise({ initial, documentType, onNext, onBack }: Props)
 function Field({
   label,
   error,
+  hint,
   children,
 }: {
   label: string;
-  error: string;
+  error: string | undefined;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
       <Label className="text-sm">{label}</Label>
       {children}
+      {hint && !error && <p className="text-xs text-muted-foreground">{hint}</p>}
       {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
