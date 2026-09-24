@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { breadcrumb, faqPage, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Mentions légales e-commerce — Obligations légales boutique en ligne | ConformeFR",
+  title: "Mentions légales e-commerce : générateur gratuit | ConformeFR",
   description:
     "Générez les mentions légales de votre boutique en ligne. Rédigées d'après la loi LCEN. Gratuit, PDF et HTML.",
   alternates: { canonical: "/mentions-legales-ecommerce" },
@@ -38,21 +40,13 @@ const faq = [
 ];
 
 export default function MentionsLegalesEcommercePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  const ld = jsonLd(faqPage(faq), breadcrumb([{ name: "Mentions légales e-commerce", path: "/mentions-legales-ecommerce" }]));
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: ld }}
       />
 
       <main className="mx-auto max-w-3xl px-4 py-16 space-y-16">
@@ -62,7 +56,7 @@ export default function MentionsLegalesEcommercePage() {
             Loi LCEN — droit français
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
-            Mentions légales<br />
+            Mentions légales{" "}<br />
             <span className="text-muted-foreground">e-commerce</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
@@ -153,6 +147,7 @@ export default function MentionsLegalesEcommercePage() {
             </Button>
           </div>
         </section>
+        <RelatedLinks current="/mentions-legales-ecommerce" />
       </main>
     </>
   );

@@ -1,0 +1,26 @@
+# ConformeFR
+
+> Générateur gratuit, sans inscription, de mentions légales et de politiques de confidentialité RGPD pour les sites web français. La structure juridique est écrite en code (règles rattachées à la LCEN, au Code de commerce, au Code de la consommation, au RGPD et aux recommandations de la CNIL) ; l'IA ne rédige que des passages explicatifs, relus par l'utilisateur. Les documents ne constituent pas un conseil juridique.
+
+## Outil
+
+- [Générateur](https://conformefr.com/generateur): mentions légales, politique de confidentialité ou les deux ; analyse facultative du site pour pré-remplir le formulaire ; téléchargement PDF ou HTML.
+
+## Guides par situation
+
+- [Mentions légales auto-entrepreneur](https://conformefr.com/mentions-legales-auto-entrepreneur): obligations des micro-entrepreneurs, mention « EI », SIRET, téléphone.
+- [Mentions légales site vitrine](https://conformefr.com/mentions-legales-site-vitrine): informations d'identification exigées pour un site d'entreprise ou de freelance.
+- [Mentions légales e-commerce](https://conformefr.com/mentions-legales-ecommerce): obligations supplémentaires des boutiques en ligne (TVA, médiateur de la consommation, CGV).
+- [Politique de confidentialité RGPD pour TPE](https://conformefr.com/politique-confidentialite-rgpd-petite-entreprise): contenu exigé par l'article 13 du RGPD, cookies, transferts hors UE.
+
+## Articles
+
+- [Mentions légales obligatoires en 2026](https://conformefr.com/blog/mentions-legales-obligatoires-2026): contenu exact, cas par statut, sanctions (articles 1-1 et 1-2 de la LCEN).
+- [Amendes CNIL : ce que risquent vraiment les petits sites](https://conformefr.com/blog/amendes-cnil-petits-sites): pouvoirs de la CNIL, procédure de sanction simplifiée, manquements fréquents.
+- [Politique de confidentialité RGPD : le guide complet pour TPE](https://conformefr.com/blog/politique-confidentialite-rgpd-guide-tpe): contenu exigé par l'article 13 du RGPD, bases légales, durées de conservation, erreurs fréquentes.
+- [Cookies et RGPD : faut-il une bannière ?](https://conformefr.com/blog/cookies-rgpd-banniere-obligatoire): cookies exemptés ou soumis au consentement, exigences de la CNIL sur le bandeau.
+
+## Projet
+
+- [Code source (MIT)](https://github.com/TeeBo8/conforme): règles juridiques codées avec leurs sources, tests, architecture.
+- [Mentions légales du site](https://conformefr.com/mentions-legales) · [Politique de confidentialité](https://conformefr.com/politique-confidentialite)

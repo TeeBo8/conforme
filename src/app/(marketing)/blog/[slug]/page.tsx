@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getArticle } from "@/content/blog/registry";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { AUTEUR, EDITEUR, SITE_URL, breadcrumb, faqPage, jsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,6 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.meta.title,
       description: article.meta.description,
       publishedTime: article.meta.publishedAt,
+      modifiedTime: article.meta.updatedAt ?? article.meta.publishedAt,
+      authors: [AUTEUR.name],
     },
   };
 }
@@ -41,21 +45,36 @@ export default async function BlogArticlePage({ params }: Props) {
     year: "numeric",
   });
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: meta.faq.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  const updated = meta.updatedAt
+    ? new Date(meta.updatedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
+    : date;
+
+  const url = `${SITE_URL}/blog/${meta.slug}`;
+  const ld = jsonLd(
+    {
+      "@type": "BlogPosting",
+      headline: meta.title,
+      description: meta.description,
+      datePublished: meta.publishedAt,
+      dateModified: meta.updatedAt ?? meta.publishedAt,
+      inLanguage: "fr-FR",
+      author: AUTEUR,
+      publisher: EDITEUR,
+      mainEntityOfPage: url,
+      url,
+    },
+    breadcrumb([
+      { name: "Blog", path: "/blog" },
+      { name: meta.title, path: `/blog/${meta.slug}` },
+    ]),
+    ...(meta.faq.length > 0 ? [faqPage(meta.faq)] : [])
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: ld }}
       />
 
       <main className="mx-auto max-w-2xl px-4 py-16 space-y-12">
@@ -72,7 +91,16 @@ export default async function BlogArticlePage({ params }: Props) {
               <span className="rounded-full border border-foreground/15 px-2.5 py-0.5">
                 {meta.tag}
               </span>
-              <span>{date}</span>
+              <span>
+                Par{" "}
+                <a href={AUTEUR.url} className="underline underline-offset-2 hover:text-foreground">
+                  {AUTEUR.name}
+                </a>
+              </span>
+              <span>·</span>
+              <time dateTime={meta.updatedAt ?? meta.publishedAt}>
+                {meta.updatedAt && meta.updatedAt !== meta.publishedAt ? `Mis à jour le ${updated}` : date}
+              </time>
               <span>·</span>
               <span>{meta.readingTime} min de lecture</span>
             </div>
@@ -118,6 +146,28 @@ export default async function BlogArticlePage({ params }: Props) {
             </dl>
           </section>
         )}
+
+        {meta.sources && meta.sources.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">Sources</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm text-muted-foreground">
+              {meta.sources.map((src) => (
+                <li key={src.url}>
+                  <a
+                    href={src.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    {src.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <RelatedLinks current={`/blog/${meta.slug}`} />
       </main>
     </>
   );

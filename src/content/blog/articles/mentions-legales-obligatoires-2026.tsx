@@ -8,6 +8,13 @@ export const meta: BlogArticleMeta = {
     "Le guide complet des mentions légales obligatoires pour tout site professionnel français : contenu exact, cas particuliers selon votre statut, sanctions encourues.",
   tag: "Mentions légales",
   publishedAt: "2026-09-01",
+  updatedAt: "2026-09-24",
+  sources: [
+    { label: "Loi n° 2004-575 du 21 juin 2004 (LCEN), articles 1-1 et 1-2 — Légifrance", url: "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000801164" },
+    { label: "LCEN, article 19 (commerce électronique) — Légifrance", url: "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000032236011" },
+    { label: "Code de commerce, article R526-27 (mention « EI ») — Légifrance", url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000045697814" },
+    { label: "Code de la consommation, article L616-1 (médiateur de la consommation) — Légifrance", url: "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032224762" },
+  ],
   readingTime: 7,
   faq: [
     {

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { breadcrumb, faqPage, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Mentions légales auto-entrepreneur — Générateur gratuit | ConformeFR",
+  title: "Mentions légales auto-entrepreneur : générateur gratuit | ConformeFR",
   description:
     "Générez vos mentions légales auto-entrepreneur en 3 minutes. Rédigées d'après la loi LCEN pour les micro-entrepreneurs. Gratuit, PDF et HTML.",
   alternates: { canonical: "/mentions-legales-auto-entrepreneur" },
@@ -38,21 +40,13 @@ const faq = [
 ];
 
 export default function MentionsLegalesAutoEntrepreneurPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  const ld = jsonLd(faqPage(faq), breadcrumb([{ name: "Mentions légales auto-entrepreneur", path: "/mentions-legales-auto-entrepreneur" }]));
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: ld }}
       />
 
       <main className="mx-auto max-w-3xl px-4 py-16 space-y-16">
@@ -62,7 +56,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
             Loi LCEN — droit français
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
-            Mentions légales<br />
+            Mentions légales{" "}<br />
             <span className="text-muted-foreground">auto-entrepreneur</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
@@ -139,6 +133,7 @@ export default function MentionsLegalesAutoEntrepreneurPage() {
             </Link>
           </Button>
         </section>
+        <RelatedLinks current="/mentions-legales-auto-entrepreneur" />
       </main>
     </>
   );

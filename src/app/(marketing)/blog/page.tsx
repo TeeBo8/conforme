@@ -10,12 +10,10 @@ export const metadata: Metadata = {
 };
 
 const upcoming = [
-  { title: "Politique de confidentialité RGPD : le guide complet pour TPE", tag: "RGPD" },
   { title: "Auto-entrepreneur : les 3 documents légaux obligatoires pour votre site", tag: "Auto-entrepreneur" },
   { title: "Site vitrine : êtes-vous en règle ? Checklist en 10 points", tag: "Site vitrine" },
   { title: "E-commerce : mentions légales + CGV, ce qui change", tag: "E-commerce" },
   { title: "Hébergeur, directeur de publication, SIRET : qui mettre dans vos mentions légales ?", tag: "Mentions légales" },
-  { title: "Cookies et RGPD : faut-il une bannière sur votre site ?", tag: "Cookies" },
   { title: "Copier les mentions légales d'un concurrent : pourquoi c'est une (très) mauvaise idée", tag: "Mentions légales" },
   { title: "Freelance : peut-on mettre son adresse perso dans les mentions légales ?", tag: "Auto-entrepreneur" },
   { title: "RGPD 2026 : ce qui a changé, ce qui arrive", tag: "RGPD" },
@@ -52,7 +50,7 @@ export default function BlogPage() {
         {upcoming.map((article) => (
           <article
             key={article.title}
-            className="rounded-xl border border-foreground/10 bg-foreground/5 p-6 space-y-3 opacity-60"
+            className="rounded-xl border border-dashed border-foreground/15 p-6 space-y-3"
           >
             <div className="flex items-center gap-2">
               <span className="rounded-full border border-foreground/15 px-2.5 py-0.5 text-xs text-muted-foreground">
@@ -60,7 +58,7 @@ export default function BlogPage() {
               </span>
               <span className="text-xs text-muted-foreground">Bientôt disponible</span>
             </div>
-            <h2 className="font-semibold text-foreground leading-snug">{article.title}</h2>
+            <h2 className="font-semibold text-muted-foreground leading-snug">{article.title}</h2>
           </article>
         ))}
       </div>

@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { APPLICATION, SITE_URL, faqPage, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
+  title: "Générateur de mentions légales et politique RGPD gratuit | ConformeFR",
+  description:
+    "Générez gratuitement vos mentions légales et votre politique de confidentialité RGPD, sans inscription. Rédigées d'après la LCEN, le RGPD et les recommandations de la CNIL, en PDF ou HTML.",
   alternates: { canonical: "/" },
 };
 
@@ -53,21 +58,17 @@ const faq = [
 ];
 
 export default function Home() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  const ld = jsonLd(
+    APPLICATION,
+    { "@type": "WebSite", name: "ConformeFR", url: SITE_URL, inLanguage: "fr-FR" },
+    faqPage(faq)
+  );
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: ld }}
       />
 
       <main className="flex flex-col flex-1 items-center px-4">
@@ -153,6 +154,9 @@ export default function Home() {
             </a>.
           </p>
         </section>
+        <div className="w-full max-w-3xl pb-24">
+          <RelatedLinks current="/" />
+        </div>
       </main>
     </>
   );

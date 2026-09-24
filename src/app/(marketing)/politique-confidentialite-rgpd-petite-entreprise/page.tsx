@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { RelatedLinks } from "@/components/shared/RelatedLinks";
+import { breadcrumb, faqPage, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité RGPD petite entreprise — ConformeFR",
+  title: "Politique de confidentialité RGPD pour TPE : modèle gratuit | ConformeFR",
   description:
     "Générez une politique de confidentialité RGPD adaptée à votre petite entreprise ou TPE. Gratuit, PDF et HTML.",
   alternates: { canonical: "/politique-confidentialite-rgpd-petite-entreprise" },
@@ -43,21 +45,13 @@ const faq = [
 ];
 
 export default function PolitiqueConfidentialiteRgpdPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map(({ question, answer }) => ({
-      "@type": "Question",
-      name: question,
-      acceptedAnswer: { "@type": "Answer", text: answer },
-    })),
-  };
+  const ld = jsonLd(faqPage(faq), breadcrumb([{ name: "Politique de confidentialité RGPD", path: "/politique-confidentialite-rgpd-petite-entreprise" }]));
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: ld }}
       />
 
       <main className="mx-auto max-w-3xl px-4 py-16 space-y-16">
@@ -67,7 +61,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
             RGPD — règlement (UE) 2016/679
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
-            Politique de confidentialité RGPD<br />
+            Politique de confidentialité RGPD{" "}<br />
             <span className="text-muted-foreground">petite entreprise</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto">
@@ -151,6 +145,7 @@ export default function PolitiqueConfidentialiteRgpdPage() {
             </Button>
           </div>
         </section>
+        <RelatedLinks current="/politique-confidentialite-rgpd-petite-entreprise" />
       </main>
     </>
   );

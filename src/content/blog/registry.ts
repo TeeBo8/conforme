@@ -1,6 +1,8 @@
 import type { BlogArticle } from "./types";
 import * as mentionsLegalesObligatoires2026 from "./articles/mentions-legales-obligatoires-2026";
 import * as amendesCnilPetitsSites from "./articles/amendes-cnil-petits-sites";
+import * as politiqueConfidentialiteGuideTpe from "./articles/politique-confidentialite-rgpd-guide-tpe";
+import * as cookiesBanniere from "./articles/cookies-rgpd-banniere-obligatoire";
 
 export const articles: BlogArticle[] = [
   {
@@ -10,6 +12,14 @@ export const articles: BlogArticle[] = [
   {
     meta: amendesCnilPetitsSites.meta,
     Body: amendesCnilPetitsSites.default,
+  },
+  {
+    meta: politiqueConfidentialiteGuideTpe.meta,
+    Body: politiqueConfidentialiteGuideTpe.default,
+  },
+  {
+    meta: cookiesBanniere.meta,
+    Body: cookiesBanniere.default,
   },
 ];
 

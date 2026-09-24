@@ -8,22 +8,29 @@ export const meta: BlogArticleMeta = {
     "Les sanctions record de la CNIL font les gros titres, mais que risque réellement un site de TPE ou d'indépendant ? Le point sur les vrais mécanismes et montants.",
   tag: "RGPD",
   publishedAt: "2026-09-04",
+  updatedAt: "2026-09-24",
+  sources: [
+    { label: "Règlement (UE) 2016/679 (RGPD), article 83 — EUR-Lex", url: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32016R0679" },
+    { label: "Les sanctions prononcées par la CNIL — cnil.fr", url: "https://www.cnil.fr/fr/les-sanctions-prononcees-par-la-cnil" },
+    { label: "La procédure de sanction simplifiée — cnil.fr", url: "https://www.cnil.fr/fr/la-procedure-de-sanction-simplifiee" },
+    { label: "Cookies et autres traceurs : FAQ de la CNIL — cnil.fr", url: "https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/FAQ" },
+  ],
   readingTime: 6,
   faq: [
     {
       question: "La CNIL contrôle-t-elle vraiment les petits sites indépendants ?",
       answer:
-        "Oui, mais rarement par contrôle proactif systématique. La très grande majorité des dossiers ouverts contre des TPE viennent d'une plainte déposée par un internaute (client, prospect, salarié) via le téléservice de plaintes de la CNIL, ou d'un contrôle automatisé en ligne portant sur les cookies.",
+        "Oui. Un dossier peut notamment partir d'une plainte déposée par un internaute (client, prospect, salarié) via le téléservice de plaintes de la CNIL, ou d'un contrôle en ligne, par exemple sur les bandeaux cookies.",
     },
     {
       question: "Une petite structure peut-elle vraiment recevoir une amende de plusieurs millions d'euros ?",
       answer:
-        "Le plafond légal (20 millions d'euros ou 4 % du chiffre d'affaires mondial) s'applique en théorie à tous, mais la CNIL module systématiquement le montant selon la taille de la structure, sa bonne foi et sa capacité financière. Pour une TPE, les sanctions prononcées restent très en dessous de ce plafond.",
+        "Le plafond légal (20 millions d'euros ou 4 % du chiffre d'affaires mondial) s'applique en théorie à tous, mais le montant tient compte notamment de la gravité du manquement, de la taille de la structure et de sa coopération (article 83 du RGPD). Pour les dossiers simples, la procédure simplifiée plafonne l'amende à 20 000 €.",
     },
     {
       question: "Que se passe-t-il si je reçois une mise en demeure de la CNIL ?",
       answer:
-        "Une mise en demeure fixe un délai (souvent 1 à 3 mois) pour vous mettre en conformité. Si vous corrigez le problème dans ce délai et répondez à la CNIL, l'affaire s'arrête généralement là, sans sanction financière. La sanction n'intervient qu'en cas d'absence de réponse ou de mise en conformité.",
+        "Une mise en demeure fixe un délai (souvent 1 à 3 mois) pour vous mettre en conformité. Si vous corrigez le problème dans ce délai et en justifiez auprès de la CNIL, la procédure peut être clôturée sans sanction. À défaut, une procédure de sanction peut être engagée.",
     },
     {
       question: "Le manque de politique de confidentialité peut-il, à lui seul, déclencher une sanction ?",
@@ -56,21 +63,28 @@ export default function Article() {
       <ul>
         <li>le <strong>rappel à l&apos;ordre</strong>, sans publicité ;</li>
         <li>
-          la <strong>mise en demeure</strong>, qui fixe un délai pour corriger le manquement
-          (c&apos;est, de loin, la mesure la plus fréquente) ;
+          la <strong>mise en demeure</strong>, qui fixe un délai pour corriger le manquement ;
         </li>
         <li>l&apos;<strong>amende administrative</strong>, dont le plafond légal atteint 20 millions d&apos;euros ou 4 % du chiffre d&apos;affaires mondial — un plafond théorique, quasiment jamais atteint par une petite structure.</li>
       </ul>
       <p>
-        Dans l&apos;immense majorité des dossiers concernant des TPE et indépendants, la
-        procédure s&apos;arrête à la mise en demeure : si vous corrigez le problème dans le
-        délai imparti, il n&apos;y a pas de sanction financière derrière.
+        Pour une TPE ou un indépendant de bonne foi, la mise en demeure est souvent la
+        première étape : si vous corrigez le problème dans le délai imparti, la procédure
+        peut s&apos;arrêter là, sans sanction financière.
+      </p>
+      <p>
+        Pour les dossiers simples, la CNIL dispose aussi depuis 2022 d&apos;une{" "}
+        <strong>procédure de sanction simplifiée</strong>{" "}(article 22-1 de la loi
+        Informatique et Libertés) : rappel à l&apos;ordre, amende plafonnée à{" "}
+        <strong>20 000 €</strong>{" "}ou injonction avec une astreinte d&apos;au plus 100 € par
+        jour de retard. Ces sanctions ne sont pas rendues publiques. C&apos;est la voie la plus
+        probable pour un petit site, bien plus que les amendes record qui font les gros titres.
       </p>
 
       <h2>Comment un contrôle démarre réellement</h2>
       <p>
-        Contrairement à l&apos;image d&apos;un contrôle surprise, la plupart des dossiers
-        ouverts contre de petites structures ont une origine précise :
+        Contrairement à l&apos;image d&apos;un contrôle surprise, un dossier contre une petite
+        structure part souvent d&apos;une origine précise :
       </p>
       <ul>
         <li>
@@ -79,9 +93,9 @@ export default function Article() {
           suppression de données restée sans réponse ;
         </li>
         <li>
-          un <strong>contrôle automatisé en ligne</strong>{" "}: la CNIL scanne régulièrement des
-          sites web pour détecter les bannières de cookies non conformes (cases pré-cochées,
-          absence de bouton « Refuser » aussi visible que « Accepter ») ;
+          un <strong>contrôle en ligne</strong>{" "}: la CNIL vérifie notamment les bandeaux de
+          cookies (cases pré-cochées, absence de bouton « Refuser » aussi visible que
+          « Accepter ») ;
         </li>
         <li>un signalement d&apos;un concurrent ou d&apos;une association de consommateurs.</li>
       </ul>
@@ -112,7 +126,7 @@ export default function Article() {
       </ul>
       <p>
         Les deux premiers points recoupent directement ce que doivent contenir vos{" "}
-        <Link href="/mentions-legales-obligatoires-2026">mentions légales</Link> et votre{" "}
+        <Link href="/blog/mentions-legales-obligatoires-2026">mentions légales</Link> et votre{" "}
         <Link href="/politique-confidentialite-rgpd-petite-entreprise">
           politique de confidentialité RGPD
         </Link>
