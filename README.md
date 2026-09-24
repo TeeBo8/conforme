@@ -10,6 +10,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-53%20passing-2ea44f?logo=vitest&logoColor=white)
 ![Price](https://img.shields.io/badge/price-free%2C%20no%20sign--up-56695c)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 
 <img src=".github/assets/document.png" alt="A generated legal notice: EI mention, RCS registration, phone number, publication director" width="820" />
 
@@ -114,6 +115,10 @@ ConformeFR is a free personal project, in production at [conformefr.com](https:/
 ## Disclaimer
 
 Generated documents are provided for information only and are **not legal advice**. They cover common situations; for regulated activities or complex cases, have them reviewed by a legal professional.
+
+## License
+
+The code is released under the [MIT License](LICENSE). Generated documents belong to the people who generate them.
 
 ## Author
 

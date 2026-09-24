@@ -76,8 +76,17 @@ export default function MentionsLegalesPage() {
         <section className="space-y-2">
           <h2 className="font-semibold text-base">4. Propriété intellectuelle</h2>
           <p>
-            Les autres contenus du site (textes, interface, code) appartiennent à Thibault Leture,
-            sauf mention contraire. Leur reproduction est interdite sans autorisation écrite.
+            Le code source de ConformeFR est publié sous{" "}
+            <a
+              href="https://github.com/TeeBo8/conforme"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-primary"
+            >
+              licence MIT
+            </a>
+            . Les autres contenus du site (textes, articles, visuels) appartiennent à Thibault
+            Leture, sauf mention contraire : leur reproduction est interdite sans autorisation écrite.
           </p>
         </section>
 

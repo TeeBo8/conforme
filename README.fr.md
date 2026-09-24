@@ -110,6 +110,10 @@ ConformeFR est un projet personnel gratuit, en production sur [conformefr.com](h
 
 Les documents générés sont fournis à titre informatif et **ne constituent pas un conseil juridique**. Ils couvrent les situations courantes ; pour une activité réglementée ou un cas complexe, faites-les relire par un professionnel du droit.
 
+## Licence
+
+Le code est publié sous [licence MIT](LICENSE). Les documents générés appartiennent à celles et ceux qui les génèrent.
+
 ## Auteur
 
 Réalisé par **Thibault Leture** — [TeeboStudio](https://teebostudio.fr), développeur Next.js freelance à Bordeaux. L'[étude de cas](https://teebostudio.fr/portfolio/conformefr) raconte l'histoire du projet.
