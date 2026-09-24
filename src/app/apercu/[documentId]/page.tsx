@@ -83,6 +83,17 @@ export default async function ApercuPage({ params }: Props) {
         {/* Document */}
         <DocumentPreview html={doc.generatedContent ?? ""} />
 
+        <p className="text-center text-sm text-muted-foreground">
+          Une erreur dans ce document, une suggestion ?{" "}
+          <a
+            href="mailto:contact@teebostudio.fr?subject=ConformeFR%20%E2%80%94%20retour%20sur%20un%20document"
+            className="underline underline-offset-2 hover:text-foreground transition-colors"
+          >
+            Écrivez-moi
+          </a>
+          , chaque retour sert à améliorer l&apos;outil.
+        </p>
+
       </div>
     </main>
   );

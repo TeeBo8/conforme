@@ -9,17 +9,17 @@ export const metadata: Metadata = {
 const profils = [
   {
     titre: "Auto-entrepreneur",
-    description: "Vos mentions légales de micro-entrepreneur, adaptées à votre statut.",
+    description: "Vos mentions légales de micro-entrepreneur.",
     href: "/mentions-legales-auto-entrepreneur",
   },
   {
     titre: "Site vitrine",
-    description: "Mettez votre site d'entreprise ou de freelance en conformité LCEN.",
+    description: "Les mentions légales de votre site d'entreprise ou de freelance.",
     href: "/mentions-legales-site-vitrine",
   },
   {
     titre: "E-commerce",
-    description: "Boutique en ligne : mentions légales complètes avant de vendre.",
+    description: "Boutique en ligne : identifiez clairement votre entreprise et votre hébergeur.",
     href: "/mentions-legales-ecommerce",
   },
   {
