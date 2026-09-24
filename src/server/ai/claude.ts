@@ -5,14 +5,20 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const MODEL = "claude-haiku-4-5-20251001";
 
+/** Une clé copiée depuis un fichier peut commencer par un BOM invisible, refusé dans l'en-tête HTTP. */
+export function cleanApiKey(raw: string | undefined): string | undefined {
+  return raw?.replace(/^﻿/, "").trim() || undefined;
+}
+
 export async function callClaude(
   prompt: string,
   { label, maxTokens = 256, system }: { label: string; maxTokens?: number; system?: string }
 ): Promise<string | undefined> {
-  if (!process.env.ANTHROPIC_API_KEY) return undefined;
+  const apiKey = cleanApiKey(process.env.ANTHROPIC_API_KEY);
+  if (!apiKey) return undefined;
   try {
     const client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
+      apiKey,
       timeout: 15_000,
       maxRetries: 1,
     });
