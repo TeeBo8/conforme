@@ -54,6 +54,12 @@ describe("buildMentionsLegales", () => {
     expect(buildMentionsLegales(BASE)).not.toContain("Activité");
   });
 
+  it("affiche la rubrique Activité validée par l'utilisateur, échappée", () => {
+    const result = buildMentionsLegales({ ...BASE, activiteDescription: "Menuiserie <b>sur mesure</b>." });
+    expect(result).toContain("Activité");
+    expect(result).toContain("Menuiserie &lt;b&gt;sur mesure&lt;/b&gt;.");
+  });
+
   // Art. 1-1, I LCEN
   it("affiche le téléphone de l'éditeur et celui de l'hébergeur", () => {
     const result = buildMentionsLegales({ ...BASE, telephone: "05 56 00 00 00", telephoneHebergeur: "0970 808 911" });

@@ -68,6 +68,7 @@ export interface DocumentFormData {
   urlHebergeur?: string;
   telephoneHebergeur?: string;
   nomCommercial?: string;
+  activiteDescription?: string;
   registre?: Registre;
   tvaIntracom?: string;
   mediateurNom?: string;

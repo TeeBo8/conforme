@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { ScanSite, type SuggestionsScan } from "./ScanSite";
 import {
   Select,
   SelectContent,
@@ -30,6 +32,8 @@ interface Props {
   siteType: SiteType;
   onNext: (data: Partial<DocumentFormData>) => void;
   onBack: () => void;
+  /** Suggestions du scan pour les étapes suivantes (données, cookies…) */
+  onScan: (suggestions: SuggestionsScan) => void;
 }
 
 const REGISTRES: { value: Registre; label: string }[] = [
@@ -45,7 +49,7 @@ const needsMentionsLegales = (type: DocumentType) =>
 
 const isHttpUrl = (v: string) => /^https?:\/\/.+/.test(v);
 
-export function StepEntreprise({ initial, documentType, siteType, onNext, onBack }: Props) {
+export function StepEntreprise({ initial, documentType, siteType, onNext, onBack, onScan }: Props) {
   const [fields, setFields] = useState({
     nomEntreprise: initial?.nomEntreprise ?? "",
     nomCommercial: initial?.nomCommercial ?? "",
@@ -67,8 +71,10 @@ export function StepEntreprise({ initial, documentType, siteType, onNext, onBack
     mediateurNom: initial?.mediateurNom ?? "",
     mediateurUrl: initial?.mediateurUrl ?? "",
     cgvUrl: initial?.cgvUrl ?? "",
+    activiteDescription: initial?.activiteDescription ?? "",
   });
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [lastActivite, setLastActivite] = useState<string | undefined>();
 
   const set = (key: keyof typeof fields, value: string) => {
     setFields((prev) => ({ ...prev, [key]: value }));
@@ -144,7 +150,34 @@ export function StepEntreprise({ initial, documentType, siteType, onNext, onBack
       mediateurNom: showEcommerce ? opt(fields.mediateurNom) : undefined,
       mediateurUrl: showEcommerce ? opt(fields.mediateurUrl) : undefined,
       cgvUrl: showEcommerce ? opt(fields.cgvUrl) : undefined,
+      activiteDescription: showML ? opt(fields.activiteDescription) : undefined,
     });
+  }
+
+  // Le scan ne remplit que les champs encore vides : il ne remplace jamais une saisie
+  function applyScan(sug: SuggestionsScan) {
+    setFields((prev) => {
+      const fill = (current: string, value: string | undefined) => current || value || "";
+      return {
+        ...prev,
+        urlSite: fill(prev.urlSite, sug.urlSite),
+        email: fill(prev.email, sug.email),
+        telephone: fill(prev.telephone, sug.telephone),
+        siret: fill(prev.siret, sug.siret),
+        activiteDescription: fill(prev.activiteDescription, sug.activite),
+        ...(sug.hebergeur && !prev.nomHebergeur
+          ? {
+              nomHebergeur: sug.hebergeur.nom,
+              adresseHebergeur: fill(prev.adresseHebergeur, sug.hebergeur.adresse),
+              urlHebergeur: fill(prev.urlHebergeur, sug.hebergeur.url),
+              telephoneHebergeur: fill(prev.telephoneHebergeur, sug.hebergeur.telephone),
+            }
+          : {}),
+      };
+    });
+    setErrors({});
+    setLastActivite(sug.activite);
+    onScan(sug);
   }
 
   function applyHebergeur(nom: string) {
@@ -168,6 +201,8 @@ export function StepEntreprise({ initial, documentType, siteType, onNext, onBack
           Ces informations seront intégrées directement dans votre document légal.
         </p>
       </div>
+
+      <ScanSite initialUrl={fields.urlSite} onResult={applyScan} />
 
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -319,6 +354,26 @@ export function StepEntreprise({ initial, documentType, siteType, onNext, onBack
             placeholder="https://monsite.fr"
           />
         </Field>
+
+        {showML && (
+          <Field
+            label="Activité (facultatif)"
+            error=""
+            hint={
+              fields.activiteDescription && fields.activiteDescription === (lastActivite ?? "")
+                ? "Proposé par l'IA à partir du texte de votre site : relisez et corrigez si besoin."
+                : "Une ou deux phrases sur ce que fait votre entreprise. Laissez vide pour ne pas afficher cette rubrique."
+            }
+          >
+            <Textarea
+              value={fields.activiteDescription}
+              onChange={(e) => set("activiteDescription", e.target.value)}
+              placeholder="Ex : Fabrication de meubles sur mesure en bois massif."
+              maxLength={600}
+              rows={2}
+            />
+          </Field>
+        )}
 
         {showML && (
           <Field label="Directeur de la publication *" error={errors.directeurPublication}>

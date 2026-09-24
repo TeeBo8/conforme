@@ -56,6 +56,7 @@ export function buildMentionsLegales(vars: MentionsLegalesVars): string {
     tvaIntracom,
     mediateurNom,
     siteType,
+    activiteDescription,
   } = escapeVars(vars);
 
   const physique = isPersonnePhysique(vars.formeJuridique);
@@ -105,6 +106,14 @@ export function buildMentionsLegales(vars: MentionsLegalesVars): string {
   ${li("Site web", lien(vars.urlHebergeur))}
 </ul>
 </section>`);
+
+  // Activité — rubrique facultative, rédigée ou validée par l'utilisateur
+  if (activiteDescription) {
+    sections.push(`<section>
+<h2>${s()}. Activité</h2>
+<p>${activiteDescription}</p>
+</section>`);
+  }
 
   // Vente en ligne — art. 19 LCEN et L616-1 C. conso
   if (siteType === "ecommerce" && (mediateurNom || vars.cgvUrl)) {

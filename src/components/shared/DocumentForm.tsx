@@ -8,6 +8,7 @@ import { StepDonnees } from "./steps/StepDonnees";
 import { StepRecap } from "./steps/StepRecap";
 import type { DocumentFormData } from "@/lib/validations/document";
 import type { DocumentType, SiteType } from "@/lib/templates/types";
+import type { SuggestionsScan } from "./steps/ScanSite";
 
 interface Props {
   onGenerate: (data: DocumentFormData) => void;
@@ -33,6 +34,25 @@ function getStepLabel(step: number, documentType?: string): string {
 export function DocumentForm({ onGenerate, isGenerating, initialData }: Props) {
   const [step, setStep] = useState(() => (initialData?.documentType ? 1 : 0));
   const [data, setData] = useState<Partial<DocumentFormData>>(initialData ?? {});
+  const [servicesScan, setServicesScan] = useState<string[] | undefined>();
+
+  // Les suggestions du scan pré-remplissent l'étape « Données » si l'utilisateur ne l'a pas encore remplie
+  function applyScan(sug: SuggestionsScan) {
+    setServicesScan(sug.services);
+    setData((prev) =>
+      prev.donneesCollectees
+        ? prev
+        : {
+            ...prev,
+            donneesCollectees: sug.donneesCollectees,
+            finalites: sug.finalites,
+            cookiesUtilises: sug.cookiesUtilises,
+            typesCookies: sug.typesCookies,
+            transfertHorsUE: sug.transfertHorsUE,
+            paysTransfert: sug.paysTransfert,
+          }
+    );
+  }
 
   const totalSteps = getTotalSteps(data.documentType);
 
@@ -97,12 +117,14 @@ export function DocumentForm({ onGenerate, isGenerating, initialData }: Props) {
           siteType={data.siteType!}
           onNext={(partial) => advance(partial)}
           onBack={() => setStep(1)}
+          onScan={applyScan}
         />
       )}
 
       {step === 3 && hasDonnees && (
         <StepDonnees
           initial={data}
+          servicesScan={servicesScan}
           siteType={data.siteType!}
           onNext={(partial) => advance(partial)}
           onBack={() => setStep(2)}

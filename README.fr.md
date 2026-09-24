@@ -17,15 +17,16 @@ Tout site professionnel français doit publier des mentions légales et, dès qu
 C'est donc un bon terrain pour une question qui dépasse le droit : **comment utiliser un LLM dans un domaine où une phrase inventée engage la responsabilité ?** La réponse de ConformeFR :
 
 1. **La structure juridique est du code.** Chaque clause vient de modèles TypeScript écrits à la main. Les règles obligatoires sont rattachées à un article de loi précis et couvertes par des tests (voir le tableau ci-dessous).
-2. **Le LLM rédige un seul paragraphe** : l'explication, en langage clair, des raisons pour lesquelles le site traite des données, dans la politique de confidentialité. Il ne touche jamais à une clause.
+2. **Le LLM ne rédige que du texte non normatif** : l'explication, en langage clair, des raisons pour lesquelles le site traite des données, et, si l'utilisateur le demande, une proposition de description de son activité, lue sur son propre site et soumise à sa relecture. Il ne touche jamais à une clause.
 3. **Sa réponse est traitée comme une entrée non fiable** : markdown retiré, HTML échappé, délai maximal de 15 s, et si l'appel échoue, le document est généré quand même.
-4. **Quand le LLM ne peut pas savoir, on ne lui demande pas.** Une première version demandait à Claude de décrire l'activité de l'entreprise à partir de son seul nom. Un audit a montré qu'il inventait des activités : la fonction a été retirée plutôt que rafistolée.
+4. **Quand le LLM ne peut pas savoir, on ne lui demande pas.** Une première version demandait à Claude de décrire l'activité de l'entreprise à partir de son seul nom. Un audit a montré qu'il inventait des activités. La solution a été une meilleure donnée d'entrée, pas un meilleur prompt : l'activité n'est plus proposée qu'à partir du vrai texte de la page d'accueil, et le modèle répond « aucune » quand ce texte ne suffit pas.
 
 ## Fonctionnalités
 
 - Formulaire par étapes qui s'adapte au statut (entrepreneur individuel / EI, société, association, particulier) et au type de site (vitrine, e-commerce, blog, SaaS).
 - Mentions légales, politique de confidentialité, ou les deux, relues à l'écran puis téléchargées en **PDF** ou en **HTML prêt à coller** — gratuit, sans compte.
-- Contrôles de cohérence : SIRET à 14 chiffres, hébergeur américain sans transfert hors UE déclaré, cookies qui exigent un bandeau de consentement.
+- **Analyse du site** : collez votre URL, la page d'accueil est lue pour pré-remplir le formulaire : coordonnées, SIRET, hébergeur, traceurs (Google Analytics, pixel Meta, vidéos YouTube...), formulaires et paiement. Seuls les champs vides sont remplis, tout reste modifiable.
+- Contrôles de cohérence : SIRET à 14 chiffres, hébergeur américain sans transfert hors UE déclaré, cookies qui exigent un bandeau de consentement (avec une alerte si des traceurs sont détectés sans bandeau).
 - Accessibilité vérifiée avec axe sur le formulaire, les documents et les pages légales (WCAG 2.1 AA, 0 violation en clair et en sombre) ; performance Lighthouse mobile de 98 à 100.
 
 <p align="center">
@@ -50,12 +51,29 @@ Chaque règle est implémentée dans [`src/lib/templates`](src/lib/templates) et
 
 Une erreur ? [Ouvrez une issue](https://github.com/TeeBo8/conforme/issues) en citant l'article de loi : c'est la contribution la plus utile au projet.
 
+## Aller chercher une URL inconnue sans risque
+
+L'analyse du site fait récupérer par le serveur une URL choisie par un visiteur anonyme : la configuration typique d'une attaque SSRF. Les protections, dans [`src/server/scan`](src/server/scan) :
+
+- uniquement `http`/`https` sur les ports 80/443, sans identifiants dans l'URL ;
+- **chaque IP résolue est vérifiée au moment de la connexion** via le `lookup` de Node (plages privées, loopback, link-local, métadonnées cloud, IPv6 encapsulant une IPv4...), ce qui bloque aussi le DNS rebinding ;
+- redirections suivies à la main (3 au maximum), chacune revérifiée ;
+- délai de 8 s, 1,5 Mo au maximum, HTML uniquement ; la page n'est jamais renvoyée au navigateur, seulement les suggestions ;
+- limite par adresse IP, et le texte de la page est transmis au modèle comme une donnée délimitée et non fiable.
+
+`localhost`, `127.0.0.1.nip.io`, `http://2130706433`, `169.254.169.254` et une redirection vers `127.0.0.1` sont tous refusés. Les plages d'IP et l'analyse des URL sont couvertes par des [tests unitaires](src/server/scan/__tests__).
+
 ## Fonctionnement
 
 ```mermaid
 flowchart LR
   F[Formulaire par étapes] --> R[tRPC · generateDocument]
   R --> T[Modèles déterministes<br/>LCEN · RGPD · CNIL]
+  U[Analyse du site · URL] --> SC[Récupération sûre · anti-SSRF]
+  SC --> A[Extraction déterministe<br/>contact · hébergeur · traceurs]
+  SC --> LA[Claude Haiku<br/>activité tirée du vrai texte]
+  A --> F
+  LA --> F
   R --> L[Claude Haiku<br/>un paragraphe explicatif]
   L --> S[Markdown retiré<br/>HTML échappé<br/>délai 15 s]
   T --> D[Document HTML]
@@ -69,7 +87,9 @@ flowchart LR
 | [`src/lib/templates/mentions-legales.ts`](src/lib/templates/mentions-legales.ts), [`politique-conf.ts`](src/lib/templates/politique-conf.ts) | Les documents juridiques, sous forme de code |
 | [`src/lib/templates/entites.ts`](src/lib/templates/entites.ts) | Règles partagées par le formulaire et les modèles (formes juridiques, SIRET, hébergeurs connus) |
 | [`src/lib/templates/escape.ts`](src/lib/templates/escape.ts) | Chaque champ saisi et chaque phrase du LLM est échappé avant d'arriver dans le HTML |
-| [`src/server/api/routers/document.ts`](src/server/api/routers/document.ts) | Génération des documents et unique appel au LLM, encadré |
+| [`src/server/scan`](src/server/scan) | Analyse du site : récupération anti-SSRF, extraction, proposition d'activité, limite d'usage |
+| [`src/server/ai/claude.ts`](src/server/ai/claude.ts) | Unique point d'entrée vers le LLM : délai, journalisation, nettoyage de la réponse |
+| [`src/server/api/routers/document.ts`](src/server/api/routers/document.ts) | Génération et analyse (tRPC) |
 | [`src/lib/pdf`](src/lib/pdf) | Rendu PDF côté serveur |
 
 ## Stack
@@ -89,10 +109,10 @@ DATABASE_URL="postgresql://..." pnpm drizzle-kit push   # crée les tables (synt
 pnpm dev
 ```
 
-`ANTHROPIC_API_KEY` est optionnelle : sans elle, les documents sont générés sans le paragraphe explicatif.
+`ANTHROPIC_API_KEY` est optionnelle : sans elle, les documents sont générés sans le paragraphe explicatif et l'analyse ne propose pas d'activité.
 
 ```bash
-pnpm test    # 53 tests unitaires sur les modèles juridiques et l'échappement
+pnpm test    # 97 tests unitaires : modèles juridiques, échappement, analyse de site, protections anti-SSRF
 pnpm lint
 pnpm build
 ```

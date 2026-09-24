@@ -1,7 +1,13 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { headers } from "next/headers";
+import { callClaude, toPlainText } from "@/server/ai/claude";
+import { fetchPublicPage, ScanError } from "@/server/scan/fetch-public";
+import { analyserPage } from "@/server/scan/analyse";
+import { proposerActivite } from "@/server/scan/activite";
+import { construireSuggestions } from "@/server/scan/suggestions";
+import { autoriserScan } from "@/server/scan/rate-limit";
 import { db } from "@/server/db";
 import { documents } from "@/server/db/schema";
 import { buildMentionsLegales } from "@/lib/templates/mentions-legales";
@@ -40,6 +46,7 @@ const generateDocumentInput = z.object({
   urlHebergeur: z.string().optional(),
   telephoneHebergeur: z.string().optional(),
   nomCommercial: z.string().optional(),
+  activiteDescription: z.string().max(600).optional(),
   registre: z.enum(["rcs", "rne", "aucun"]).optional(),
   tvaIntracom: z.string().optional(),
   mediateurNom: z.string().optional(),
@@ -55,42 +62,41 @@ const generateDocumentInput = z.object({
   paysTransfert: z.string().optional(),
 });
 
-async function callAI(prompt: string): Promise<string | undefined> {
-  if (!process.env.ANTHROPIC_API_KEY) return undefined;
-  try {
-    const client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-      timeout: 15_000,
-      maxRetries: 1,
-    });
-    const msg = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 256,
-      messages: [{ role: "user", content: prompt }],
-    });
-    const block = msg.content[0];
-    return block?.type === "text" ? toPlainText(block.text) : undefined;
-  } catch (err) {
-    // Le document reste généré sans la zone IA, mais l'échec doit être visible dans les logs
-    console.error("[generateDocument] appel IA échoué :", err);
-    return undefined;
-  }
-}
-
-/** Le texte IA est inséré comme un paragraphe : on retire le markdown (titres, gras, puces). */
-function toPlainText(text: string): string | undefined {
-  const plain = text
-    .split("\n")
-    .filter((line) => !/^\s*#/.test(line))
-    .map((line) => line.replace(/^\s*[-•]\s+/, ""))
-    .join(" ")
-    .replace(/[*_`]+/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-  return plain || undefined;
-}
+const callAI = async (prompt: string) =>
+  toPlainText(await callClaude(prompt, { label: "generateDocument" }));
 
 export const documentRouter = createTRPCRouter({
+  /**
+   * Analyse la page d'accueil publique d'un site pour pré-remplir le formulaire.
+   * Le HTML n'est jamais renvoyé au navigateur : seules les suggestions le sont.
+   */
+  scanSite: publicProcedure
+    .input(z.object({ url: z.string().min(1).max(500) }))
+    .mutation(async ({ input }) => {
+      const hdrs = await headers();
+      const ip = hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ?? hdrs.get("x-real-ip") ?? "inconnue";
+      if (!autoriserScan(ip)) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Trop d'analyses en peu de temps : réessayez dans quelques minutes.",
+        });
+      }
+
+      const url = /^https?:\/\//i.test(input.url.trim()) ? input.url.trim() : `https://${input.url.trim()}`;
+      try {
+        const page = await fetchPublicPage(url);
+        const analyse = analyserPage(page.html, page.headers);
+        const activite = await proposerActivite(analyse);
+        return construireSuggestions(analyse, page.finalUrl, activite);
+      } catch (err) {
+        if (err instanceof ScanError) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: err.message });
+        }
+        console.error("[scanSite] erreur inattendue :", err);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "L'analyse a échoué." });
+      }
+    }),
+
   generateDocument: publicProcedure
     .input(generateDocumentInput)
     .mutation(async ({ input }) => {
@@ -119,6 +125,7 @@ export const documentRouter = createTRPCRouter({
           registre: input.registre,
           rcsVille: input.rcsVille,
           nomCommercial: input.nomCommercial,
+          activiteDescription: input.activiteDescription,
           tvaIntracom: input.tvaIntracom,
           mediateurNom: input.mediateurNom,
           mediateurUrl: input.mediateurUrl,

@@ -13,6 +13,8 @@ interface Props {
   siteType: SiteType;
   onNext: (data: Partial<DocumentFormData>) => void;
   onBack: () => void;
+  /** Services reconnus par le scan du site, s'il a été lancé */
+  servicesScan?: string[];
 }
 
 const DONNEES_OPTIONS: { value: DonneeCollectee; label: string }[] = [
@@ -52,7 +54,7 @@ function toggle<T>(arr: T[], value: T): T[] {
   return arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 }
 
-export function StepDonnees({ initial, onNext, onBack }: Props) {
+export function StepDonnees({ initial, onNext, onBack, servicesScan }: Props) {
   const [donneesCollectees, setDonnees] = useState<DonneeCollectee[]>(
     (initial?.donneesCollectees as DonneeCollectee[]) ?? []
   );
@@ -118,6 +120,15 @@ export function StepDonnees({ initial, onNext, onBack }: Props) {
           Ces informations structurent votre politique de confidentialité.
         </p>
       </div>
+
+      {servicesScan && (
+        <p className="rounded-lg border border-foreground/15 bg-foreground/[0.03] px-4 py-3 text-xs">
+          Réponses pré-remplies d&apos;après l&apos;analyse de votre page d&apos;accueil
+          {servicesScan.length > 0 ? ` (${servicesScan.join(", ")})` : ""}. Seule la page
+          d&apos;accueil a été lue : ajoutez ce que vous collectez ailleurs (formulaires de
+          commande, espace client, newsletter…).
+        </p>
+      )}
 
       {/* Données collectées */}
       <div className="space-y-3">

@@ -56,6 +56,15 @@ export default function PolitiqueConfidentialitePage() {
               n&apos;est transmise. Base légale : exécution du service (art. 6.1.b RGPD).
             </li>
             <li>
+              <strong className="text-foreground">Analyse de votre site (facultative)</strong> : si
+              vous lancez « Analyser mon site », nous lisons la page d&apos;accueil publique de
+              l&apos;adresse indiquée pour en extraire les coordonnées affichées et les services
+              tiers. Son texte visible est envoyé à l&apos;API d&apos;Anthropic pour proposer une
+              description de l&apos;activité. La page elle-même n&apos;est pas conservée : seules les
+              suggestions vous sont renvoyées. Base légale : exécution du service que vous
+              demandez (art. 6.1.b RGPD).
+            </li>
+            <li>
               <strong className="text-foreground">Comptes créés avant la gratuité</strong>{" "}
               (adresse email, nom, mot de passe chiffré, sessions de connexion avec adresse IP et
               navigateur) : ils permettent de retrouver les documents achetés à l&apos;époque où

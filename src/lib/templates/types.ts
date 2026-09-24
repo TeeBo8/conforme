@@ -22,6 +22,8 @@ export interface BaseVars {
 export interface MentionsLegalesVars extends BaseVars {
   directeurPublication: string;
   nomCommercial?: string;
+  /** Rubrique « Activité » : texte validé par l'utilisateur (proposé par le scan du site) */
+  activiteDescription?: string;
   capitalSocial?: string;
   registre?: Registre;
   rcsVille?: string;
